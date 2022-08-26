@@ -156,6 +156,7 @@
       <field name="name">Informes de predicación</field>
       <field name="res_model">secretary.informes</field>
       <field name="view_mode">kanban,tree,form</field>      
+      <field name="context">{"search_default_groupby_mes":1}</field>
       <field name="help" type="html">
         <h3 class="oe_view_nocontent_create">
           INFORMES        
@@ -220,6 +221,19 @@
             </t>
           </templates>
         </kanban>
+      </field>
+    </record>
+
+    <record id="secretary_informes_view_search" model="ir.ui.view">
+      <field name="name">secretary.informes.view.search</field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <search string="Filtrar Informes">
+          <field name="mes" />
+          <group expand="1" string="Agrupar por...">
+            <filter name="groupby_mes" string="Agrupados por mes" domain="[]" context="{'group_by': 'mes'}" />
+          </group>
+        </search>
       </field>
     </record>
 
