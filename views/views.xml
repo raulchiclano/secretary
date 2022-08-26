@@ -1,0 +1,254 @@
+<odoo>
+  <data>
+
+    <!--MODELO PUBLICADORES -->
+
+    <record id="view_secretary_publicadores_form" model="ir.ui.view">
+      <field name="name">view.secretary.publicadores.form</field>
+      <field name="model">secretary.publicadores</field>
+      <field name="arch" type="xml">
+        <form string="Publicadores">
+          <sheet>
+            <group name="group_top" string="DATOS DEL PUBLICADOR">
+              <group name="group_left">
+                <field name="name" />
+                <field name="fecha_nacimiento" />
+                <field name="fecha_bautismo" />
+                <field name="telefono" />
+                <field name="email" />
+              </group>
+              <group name="group_right" string="">
+                <field name="genero" />
+                <field name="direccion" />
+                <field name="tipo" />
+                <field name="grupo" />
+                <field name="image" widget='image' />
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_secretary_publicadores_tree" model="ir.ui.view">
+      <field name="name">view.secretary.publicadores.tree</field>
+      <field name="model">secretary.publicadores</field>
+      <field name="arch" type="xml">
+        <tree string="Publicadores">
+          <field name="name" />
+          <field name="direccion" />
+          <field name="email" />
+          <field name="grupo" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_secretary_publicadores_kanban" model="ir.ui.view">
+      <field name="name">view.secretary.publicadores.kanban </field>
+      <field name="model">secretary.publicadores</field>
+      <field name="arch" type="xml">
+        <kanban default_order="grupo">
+          <field name="name"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_global_click">
+                <div class="oe_kanban_details">
+                  <h3>
+                    <field name="name" />
+                  </h3>
+                </div>
+                
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <record id="secretary_publicadores_view_search" model="ir.ui.view">
+      <field name="name">secretary.publicadores.view.search</field>
+      <field name="model">secretary.publicadores</field>
+      <field name="arch" type="xml">
+        <search string="Filtrar publicadores">
+          <field name="tipo" />
+          <field name="grupo"/>
+
+          <group expand="1" string="Agrupar por...">
+            <filter name="groupby_tipo" string="Tipo de publicador" domain="[]" context="{'group_by': 'tipo'}" />
+            <filter name="groupby_grupo" string="Grupos de servicio" domain="[]" context="{'group_by': 'grupo'}" />            
+          </group>
+        </search>
+      </field>
+    </record>
+
+
+    <record id="secretary_publicadores_action" model="ir.actions.act_window">
+      <field name="name">Publicadores</field>
+      <field name="res_model">secretary.publicadores</field>
+      <field name="view_mode">kanban,tree,form</field> 
+      <field name="context">{"search_default_groupby_grupo":1}</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Publicadores        
+        </p>
+        <p>
+          Click en 'Nuevo' para dar de alta un publicador
+        </p>
+
+      </field>
+    </record>
+
+
+
+    <!--MODELO GRUPOS -->
+
+    <record id="secretary_grupos_action" model="ir.actions.act_window">
+      <field name="name">Grupos de servicio</field>
+      <field name="res_model">secretary.grupos</field>
+      <field name="view_mode">tree,form</field>      
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Grupos de Servicio        
+        </p>
+        <p>
+          Click en 'Nuevo' para crear un nuevo grupo de servicio
+        </p>
+
+      </field>
+    </record>
+
+
+
+
+    <!--MODELO INFORMES -->
+
+    <record id="view_secretary_informes_form" model="ir.ui.view">
+      <field name="name">view.secretary.informes.form</field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <form string="Informes de predicación">
+          <sheet>
+            <group name="group_top" string="NOMBRE DEL PUBLICADOR">
+              <field name="nombre" />
+              <group name="group_left" string=''>
+                <field name="mes" />
+                <field name="horas" />
+                <field name="revisitas" />
+                <field name="publicaciones" />
+              </group>
+              <group name="group_right" string=' '>
+                <field name="año" />
+                <field name="videos" />
+                <field name="revisitas" />
+              </group>
+            </group>
+            <notebook>
+              <page string="Description">
+                  <field name="notas"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="secretary_informes_action" model="ir.actions.act_window">
+      <field name="name">Informes de predicación</field>
+      <field name="res_model">secretary.informes</field>
+      <field name="view_mode">kanban,tree,form</field>      
+      <field name="help" type="html">
+        <h3 class="oe_view_nocontent_create">
+          INFORMES        
+        </h3>
+        <p>
+          Click en 'Nuevo' para crear un informe
+        </p>
+
+      </field>
+    </record>
+
+    <record id="view_secretary_informes_tree" model="ir.ui.view">
+      <field name="name">view.secretary.informes.tree</field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <tree string="Informes">
+          <field name="mes" />
+          <field name="año" />
+          <field name="nombre" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_secretary_informes_kanban" model="ir.ui.view">
+      <field name="name">view.secretary.informes.kanban </field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <kanban class="o_secretary_informes_kanban">
+          <field name="nombre"/>
+          <field name="mes"/>
+          <field name="año"/>
+          <field name="horas"/>
+          <field name="publicaciones"/>
+          <field name="revisitas"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_global_click">
+                <div class="oe_kanban_details">
+                  <h3>
+                    <field name="nombre" />
+                  </h3>
+                  <strong class="oe_kanban_record_title">
+                    <div t-if="record.mes.value">
+                      <t t-esc="record.mes.value"/> 
+                    </div>
+                  </strong>
+                  
+                  <div t-if="record.horas.value">
+                    <strong>Mes:
+                      <t t-esc="record.horas.value"/> 
+                    </strong>
+                  </div>
+                  <div t-if="record.publicaciones.value">
+                    <strong>Publicaciones: 
+                      <t t-esc="record.publicaciones.value"/> 
+                    </strong>
+                  </div>
+
+                </div>
+                
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+
+
+    <!--MENUS COMUNES -->
+
+    <menuitem id="menu_secretary_root" name="Secretary" sequence="10" />
+    <menuitem id="menu_secretary_publicadores" name="Publicadores" parent="menu_secretary_root" sequence="0" />
+    <menuitem
+      id="menu_secretary_publicador"
+      name="Publicador"
+      action="secretary_publicadores_action"     
+      parent="menu_secretary_publicadores"
+      sequence="0"/>
+    <menuitem
+      id="menu_secretary_grupos"
+      name="Grupos"
+      action="secretary_grupos_action"     
+      parent="menu_secretary_publicadores"
+      sequence="0"/>
+
+    <menuitem id="menu_secretary_informes" name="Informes" parent="menu_secretary_root" sequence="0" />
+    <menuitem
+    id="menu_secretary_informe"
+    name="Informes"
+    action="secretary_informes_action"     
+    parent="menu_secretary_informes"
+    sequence="0"/>
+
+  </data>
+</odoo>
