@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from email.policy import default
 import string
 from odoo import models, fields, api
-from datetime import date
+from datetime import *
 
 
 def get_years(): 
@@ -32,21 +33,21 @@ class grupos(models.Model):
     _description = 'Grupos de Servicio'
 
     name = fields.Char(string='Nombre')
+    #id = fields.Integer(string= 'ID', default=lambda self: self.env['ir.sequence'].next_by_code('increment_your_field'))
 
-    def f_create(self):
-        grupo = {
-            'name': 'Test',
-        }
-
-        self.env['secretary.grupos'].create(grupo)
 
 class informes(models.Model):
      _name = 'secretary.informes'
      _description = 'Informe de predicación'
      
+     #current_year = fields.Integer(string="Año actual", default=datetime.now().year)
+     #current_year = str(current_year)
+
+     
      nombre = fields.Many2one(string='Publicador', comodel_name="secretary.publicadores")
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=str(date.today().month))
-     año = fields.Selection(get_years(), string='Año', default='2022')
+     current_year = datetime.strftime(datetime.today(),'%Y')
+     año = fields.Selection(get_years(), string='Año', default=current_year)
      horas = fields.Integer(string='Horas', required=True)
      revisitas = fields.Integer(string="Revisitas")
      cursos = fields.Integer(string="Cursos Bíblicos")
@@ -56,7 +57,8 @@ class informes(models.Model):
      notas = fields.Text(string='Notas:')
 
 
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+def g_create(self):
+    grupo = {
+        'name': 'caca' 
+    }
+    self.env['secretary.grupos'].create(grupo)
