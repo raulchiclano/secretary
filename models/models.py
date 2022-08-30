@@ -66,7 +66,9 @@ class informes(models.Model):
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
 
-     
+     _sql_constraints = [
+        ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
+    ]
 
 
 
