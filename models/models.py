@@ -28,12 +28,22 @@ class publicadores(models.Model):
      image = fields.Binary(string='Imagen')
 
 
+
+
 class grupos(models.Model):
     _name = 'secretary.grupos'
     _description = 'Grupos de Servicio'
 
-    name = fields.Char(string='Nombre')
-    #id = fields.Integer(string= 'ID', default=lambda self: self.env['ir.sequence'].next_by_code('increment_your_field'))
+    id = fields.Integer(string= 'Nombre', default=lambda self: self.env['ir.sequence'].next_by_code('increment_your_field'))
+    name = fields.Integer(string='Nombre', related="id")
+
+
+    def g_create(self):
+       grupo = {
+           'name': 'Grupo'
+       }
+       print(grupo)
+       self.env['secretary.grupos'].create(grupo) 
 
 
 class informes(models.Model):
@@ -56,9 +66,7 @@ class informes(models.Model):
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
 
+     
 
-def g_create(self):
-    grupo = {
-        'name': 'caca' 
-    }
-    self.env['secretary.grupos'].create(grupo)
+
+

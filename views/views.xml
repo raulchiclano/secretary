@@ -102,22 +102,35 @@
 
     <!--MODELO GRUPOS -->
 
-    <record id="secretary_grupos_view_tree" model="ir.ui.view">
-      <field name="name">secretary.grupos.view.tree</field>
+
+    <record id="view_secretary_grupos_kanban" model="ir.ui.view">
+      <field name="name">view.secretary.grupos.kanban </field>
       <field name="model">secretary.grupos</field>
       <field name="arch" type="xml">
-        <tree string="Grupos">
-          <field name="name" />
-          <!--button name="g_create" string="Crear" class="oe_highlight" type="object" /-->       
-        </tree>
+        <kanban class="o_secretary_grupos_kanban">
+          <field name="id"/>
+          <field name="name"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_global_click">
+                <div class="oe_kanban_details">
+                  <h3>
+                    Grupo de servicio: <field name="name" />
+                  </h3>                                
+
+                </div>
+                
+              </div>
+            </t>
+          </templates>
+        </kanban>
       </field>
     </record>
-
 
     <record id="secretary_grupos_action" model="ir.actions.act_window">
       <field name="name">Grupos de servicio</field>
       <field name="res_model">secretary.grupos</field>
-      <field name="view_mode">tree,form</field>      
+      <field name="view_mode">kanban,tree,form</field>
       <field name="help" type="html">
         <p class="oe_view_nocontent_create">
           Grupos de Servicio        
