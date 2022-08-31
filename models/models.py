@@ -26,6 +26,10 @@ class publicadores(models.Model):
      grupo = fields.Many2one(string='Grupo de Servicio', comodel_name="secretary.grupos")
      email = fields.Char(string='Email')
      image = fields.Binary(string='Imagen')
+     activo = fields.Boolean(string='Activo', default='True', readonly=True)
+
+     def f_activo(self):
+        self.activo = not self.activo
 
 
 

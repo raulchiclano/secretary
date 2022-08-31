@@ -9,6 +9,9 @@
       <field name="arch" type="xml">
         <form string="Publicadores">
           <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="f_activo" type="object" class="oe_stat_button" string='Activo/Inactivo' icon='fa-check-square-o'/>
+            </div>
             <group name="group_top" string="DATOS DEL PUBLICADOR">
               <group name="group_left">
                 <field name="name" />
@@ -16,6 +19,7 @@
                 <field name="fecha_bautismo" />
                 <field name="telefono" />
                 <field name="email" />
+                <field name="activo" />
               </group>
               <group name="group_right" string="">
                 <field name="genero" />
