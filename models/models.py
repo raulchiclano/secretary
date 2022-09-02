@@ -27,6 +27,7 @@ class publicadores(models.Model):
      email = fields.Char(string='Email')
      image = fields.Binary(string='Imagen')
      activo = fields.Boolean(string='Activo', default='True', readonly=True)
+     informe_id = fields.One2many("secretary.informes", "nombre", string="Mis Informes")
 
      def f_activo(self):
         self.activo = not self.activo
@@ -58,7 +59,7 @@ class informes(models.Model):
      #current_year = str(current_year)
 
      
-     nombre = fields.Many2one(string='Publicador', comodel_name="secretary.publicadores")
+     nombre = fields.Many2one("secretary.publicadores", string='Publicador')
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=str(date.today().month))
      current_year = datetime.strftime(datetime.today(),'%Y')
      año = fields.Selection(get_years(), string='Año', default=current_year)
@@ -73,6 +74,21 @@ class informes(models.Model):
      _sql_constraints = [
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
+
+class InformesReport(models.AbstractModel):
+    _name='report.secretary.informe_mensual'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        report_obj = self.env['ir.actions.report']
+        report = report_obj._get_report_from_name('secretary.informe_mensual')
+        return {
+            'doc_ids': docids,
+            'doc_model': self.env['secretary.tarjeta_publicador'],
+            'docs': self.env['secretary.publicadores'].browse(docids)
+        }
+
+
 
 
 

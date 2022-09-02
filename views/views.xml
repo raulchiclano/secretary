@@ -43,6 +43,7 @@
           <field name="direccion" />
           <field name="email" />
           <field name="grupo" />
+          <field name="informe_id" />
         </tree>
       </field>
     </record>

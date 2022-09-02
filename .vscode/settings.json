@@ -24,16 +24,6 @@
             "previewLimit": 50,
             "server": "localhost",
             "port": 5432,
-            "askForPassword": true,
-            "driver": "PostgreSQL",
-            "name": "Secretary",
-            "database": "secretary_db",
-            "username": "odoo"
-        },
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5432,
             "driver": "PostgreSQL",
             "name": "Secretary",
             "database": "secretary_db",
@@ -49,6 +39,16 @@
             "database": "secretary_db",
             "username": "odoo",
             "password": "odoo"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "Secretary",
+            "database": "secretary_db",
+            "username": "odoo"
         }
     ]
 }

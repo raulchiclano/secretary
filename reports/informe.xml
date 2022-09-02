@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Tarjeta publicador"
+            id="secretary_tarjeta_report"
+            model="secretary.publicadores"
+            report_type="qweb-pdf"
+            name="secretary.tarjeta_publicador"
+            file="Tarjeta_publicador"
+            attachment_use="True"
+        />
+
+    </data>
+    
+
+</odoo>
