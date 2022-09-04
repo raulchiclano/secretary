@@ -185,7 +185,7 @@
     <record id="secretary_informes_action" model="ir.actions.act_window">
       <field name="name">Informes de predicación</field>
       <field name="res_model">secretary.informes</field>
-      <field name="view_mode">kanban,tree,form</field>      
+      <field name="view_mode">kanban,tree,form,graph</field>      
       <field name="context">{"search_default_groupby_mes":1, "search_default_filterby_año":1}</field>
       <field name="help" type="html">
         <h3 class="oe_view_nocontent_create">
@@ -252,9 +252,9 @@
       <field name="model">secretary.informes</field>
       <field name="arch" type="xml">
         <search string="Filtrar Informes">
-          <field name="mes" />
+          <field name="fecha" />
           <group expand="1" string="Agrupar por...">
-            <filter name="groupby_mes" string="Agrupados por mes" domain="[]" context="{'group_by': 'mes'}" />
+            <filter name="groupby_mes" string="Agrupados por mes" domain="[]" context="{'group_by': 'fecha'}" />
           </group>
           <filter name="filterby_año" string="Año actual" domain="[('año', '=', '2022')]" />
         
@@ -262,9 +262,20 @@
       </field>
     </record>
 
+    <record id="view_secretary_informes_graph" model="ir.ui.view">
+      <field name="name">view.secretary.informes.graph</field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <graph string="Totales">
+          <field name="mes" />
+          <field name="horas" />
+
+        </graph>
+      </field>
+    </record>
 
 
-    <!--MENUS COMUNES -->
+        <!--MENUS COMUNES -->
 
     <menuitem id="menu_secretary_root" name="Secretary" sequence="10" />
     <menuitem id="menu_secretary_publicadores" name="Publicadores" parent="menu_secretary_root" sequence="0" />
@@ -288,6 +299,8 @@
     action="secretary_informes_action"     
     parent="menu_secretary_informes"
     sequence="0"/>
+
+
 
   </data>
 </odoo>

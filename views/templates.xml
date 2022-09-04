@@ -8,7 +8,7 @@
                 <h2>Informe de: <span t-field="publicador.name"/></h2>
                 
                 <table>
-                  <colgroup span="1" style="width:9%;" />
+                  <colgroup span="1" style="width:10%;" />
                   <colgroup span="5" style="width:16%;" />
                   <thead>
                     <tr>

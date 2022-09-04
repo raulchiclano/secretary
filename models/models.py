@@ -28,6 +28,17 @@ class publicadores(models.Model):
      image = fields.Binary(string='Imagen')
      activo = fields.Boolean(string='Activo', default='True', readonly=True)
      informe_id = fields.One2many("secretary.informes", "nombre", string="Mis Informes")
+     #totales = fields.Char(compute="total_test")
+
+     '''def total_test(self):
+    
+        informe = self.env['secretary.informes'].search([('mes', '=', '8')])
+        for i in informe:
+            hora = informe.horas
+            total_horas=sum(list(hora))
+        return total_horas'''
+
+
 
      def f_activo(self):
         self.activo = not self.activo
@@ -54,6 +65,7 @@ class grupos(models.Model):
 class informes(models.Model):
      _name = 'secretary.informes'
      _description = 'Informe de predicación'
+     _rec_name = 'fecha'
      
      #current_year = fields.Integer(string="Año actual", default=datetime.now().year)
      #current_year = str(current_year)
@@ -62,6 +74,7 @@ class informes(models.Model):
      nombre = fields.Many2one("secretary.publicadores", string='Publicador')
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=str(date.today().month))
      current_year = datetime.strftime(datetime.today(),'%Y')
+     fecha = fields.Char(compute="_compute_date", store=True)
      año = fields.Selection(get_years(), string='Año', default=current_year)
      horas = fields.Integer(string='Horas', required=True)
      revisitas = fields.Integer(string="Revisitas")
@@ -71,9 +84,29 @@ class informes(models.Model):
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
 
+     @api.depends("mes")
+     def _compute_date(self):
+        for record in self:
+            record.fecha = "%s-%s" %(record.mes,record.año)
+
+
      _sql_constraints = [
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 class InformesReport(models.AbstractModel):
     _name='report.secretary.informe_mensual'
