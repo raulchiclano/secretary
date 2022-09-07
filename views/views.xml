@@ -206,6 +206,7 @@
           <field name="mes" />
           <field name="año" />
           <field name="nombre" />
+          <button name="fechas" string="Acción" class="oe_highlight" type="object"/>
         </tree>
       </field>
     </record>
@@ -275,6 +276,37 @@
     </record>
 
 
+    <!--MODELO TOTALES -->
+
+    <record id="secretary_totales_action" model="ir.actions.act_window">
+      <field name="name">Totales</field>
+      <field name="res_model">secretary.totales</field>
+      <field name="view_mode">tree,form</field>      
+      <field name="help" type="html">
+        <h3 class="oe_view_nocontent_create">
+          TOTALES        
+        </h3>
+        <p>
+          Click en 'Nuevo' para generar el resumen del mes
+        </p>
+      </field>
+    </record>
+
+    <!--record id="view_secretary_totales_form" model="ir.ui.view">
+      <field name="name">view.secretary.totales.form</field>
+      <field name="model">secretary.totales</field>
+      <field name="arch" type="xml">
+        <form string="Generar resumen del mes">
+          <sheet>
+            <group name="group_top" string="ESCOGA UN MES">
+              <field name="fecha" />
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record-->
+
+
         <!--MENUS COMUNES -->
 
     <menuitem id="menu_secretary_root" name="Secretary" sequence="10" />
@@ -298,6 +330,13 @@
     name="Informes"
     action="secretary_informes_action"     
     parent="menu_secretary_informes"
+    sequence="0"/>
+
+    <menuitem
+    id="menu_secretary_totales"
+    name="Totales"
+    action="secretary_totales_action"     
+    parent="menu_secretary_root"
     sequence="0"/>
 
 

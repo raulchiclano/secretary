@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+# Para ver print() en los logs en Docker
+import logging
+     
+_logger = logging.getLogger(__name__)
+_logger.info('Mensaje')
+# ----------------------------------------
+
+
 from email.policy import default
 import string
 from odoo import models, fields, api
@@ -28,15 +36,8 @@ class publicadores(models.Model):
      image = fields.Binary(string='Imagen')
      activo = fields.Boolean(string='Activo', default='True', readonly=True)
      informe_id = fields.One2many("secretary.informes", "nombre", string="Mis Informes")
-     #totales = fields.Char(compute="total_test")
 
-     '''def total_test(self):
-    
-        informe = self.env['secretary.informes'].search([('mes', '=', '8')])
-        for i in informe:
-            hora = informe.horas
-            total_horas=sum(list(hora))
-        return total_horas'''
+
 
 
 
@@ -90,12 +91,62 @@ class informes(models.Model):
             record.fecha = "%s-%s" %(record.mes,record.año)
 
 
+     def fechas(self):
+        informes = self.env['secretary.informes'].search([])
+        fechas_filtered = informes.filtered(lambda f: f.año == '2022')
+        self.date(fechas_filtered)
+
+     def date(self, informes):
+        fecha = []
+        for fechas in informes:
+            fecha.append((fechas.fecha, fechas.fecha))
+        fecha = list(dict.fromkeys(fecha))
+        fecha.sort(reverse=True)
+        print(fecha, flush=True)
+
+
+
+
      _sql_constraints = [
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
 
     
 
+
+class totales(models.Model):
+    _name = 'secretary.totales'
+    _description = 'Totales de la predicación'
+    _auto = False
+    _rec_name = 'id'
+
+    def _compute_date(self):
+        informes = self.env['secretary.informes'].search([])
+        fechas_filtered = informes.filtered(lambda f: f.año == '2022')
+        fecha = []
+        for fechas in fechas_filtered:
+            fecha.append((fechas.fecha, fechas.fecha))
+        fecha = list(dict.fromkeys(fecha))
+        fecha.sort(reverse=True)
+        #print(fecha, flush=True)
+        return fecha
+
+    def date(self, informes):
+        fecha = []
+        for fechas in informes:
+            fecha.append((fechas.fecha, fechas.fecha))
+        fecha = list(dict.fromkeys(fecha))
+        fecha.sort(reverse=True)
+        #print(fecha, flush=True)
+        return fecha
+    #base = fields.Many2one("secretary.informes") # Escoger el campo Fecha sin repetir
+    fecha = fields.Selection(_compute_date, string = 'Escoga un mes para auditar')
+    
+
+
+
+
+ 
 
 
 
