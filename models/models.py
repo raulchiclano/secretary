@@ -2,7 +2,8 @@
 
 # Para ver print() en los logs en Docker
 import logging
-     
+from select import select
+
 _logger = logging.getLogger(__name__)
 _logger.info('Mensaje')
 # ----------------------------------------
@@ -14,10 +15,10 @@ from odoo import models, fields, api
 from datetime import *
 
 
-def get_years(): 
-    year_list = [] 
-    for i in range(2022, 2050): 
-        year_list.append((str(i), str(i))) 
+def get_years():
+    year_list = []
+    for i in range(2022, 2050):
+        year_list.append((str(i), str(i)))
     return year_list
 
 class publicadores(models.Model):
@@ -60,20 +61,21 @@ class grupos(models.Model):
            'name': 'Grupo'
        }
        print(grupo)
-       self.env['secretary.grupos'].create(grupo) 
+       self.env['secretary.grupos'].create(grupo)
 
 
 class informes(models.Model):
      _name = 'secretary.informes'
      _description = 'Informe de predicación'
      _rec_name = 'fecha'
-     
+
      #current_year = fields.Integer(string="Año actual", default=datetime.now().year)
      #current_year = str(current_year)
 
-     
+
      nombre = fields.Many2one("secretary.publicadores", string='Publicador')
-     mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=str(date.today().month))
+     tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo', store=True)
+     mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=lambda self: str((date.today().month)-1))
      current_year = datetime.strftime(datetime.today(),'%Y')
      fecha = fields.Char(compute="_compute_date", store=True)
      año = fields.Selection(get_years(), string='Año', default=current_year)
@@ -84,26 +86,25 @@ class informes(models.Model):
      videos = fields.Integer(string="Videos")
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
+     #is_regular = fields.Boolean(string = "Informe tipo regular", compute='_compute_is_regular')
+     #is_auxiliar = fields.Boolean(string = "Informe tipo auxiliar", compute='_compute_is_auxiliar')
+     este_mes_aux = fields.Boolean(string = "Aux. 30/50 horas", readonly=True)
+     tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe")
+
+     def este_mes_aux_activo(self):
+        self.este_mes_aux = not self.este_mes_aux     
 
      @api.depends("mes")
      def _compute_date(self):
         for record in self:
             record.fecha = "%s-%s" %(record.mes,record.año)
 
+     @api.onchange('nombre')
+     def set_tipo_informe(self):
+        print("Toc, toc", flush=True)
+        self.tipo_informe = "%s" %(self.tipo_publicador)        
 
-     def fechas(self):
-        informes = self.env['secretary.informes'].search([])
-        fechas_filtered = informes.filtered(lambda f: f.año == '2022')
-        self.date(fechas_filtered)
-
-     def date(self, informes):
-        fecha = []
-        for fechas in informes:
-            fecha.append((fechas.fecha, fechas.fecha))
-        fecha = list(dict.fromkeys(fecha))
-        fecha.sort(reverse=True)
-        print(fecha, flush=True)
-
+     
 
 
 
@@ -111,15 +112,56 @@ class informes(models.Model):
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
 
+
+
+
+class TotalesMensuales(models.TransientModel):
+    _name = 'secretary.totales_mensuales'
+    _description = 'Totales mensuales de la predicación'
+   # _auto = False
+   # _rec_name = 'id'
+
+   
+    def _informe_sort(self):
+        informes = self.env['secretary.informes'].search([])
+        informes_sorted = informes.sorted(key= lambda i : i.fecha ,reverse=True)
+        menu_fecha = []
+        for informe in informes_sorted:
+            menu_fecha.append((informe.fecha, informe.fecha))
+        menu_fecha = list(dict.fromkeys(menu_fecha))
+        return menu_fecha
+
+    mes_seleccionado = fields.Selection(_informe_sort, string = "Escoga mes para generar informe", required = True)
+
+    def sumar_horas(self):
+        print("Hasta aquí el boton funciona",self.mes_seleccionado ,flush=True)
+        total_informes = self.env['secretary.informes'].search([])
+        total_informes_filtered = total_informes.filtered(lambda i : i.fecha == self.mes_seleccionado)
+        for informe in total_informes_filtered:
+            print(informe.tipo_publicador, flush=True)
+        
+    # AGRUPACIÓN (read_group)
+    def get_average_horas(self):
+        grouped = self.env['secretary.informes'].read_group(
+            [('fecha', '=', self.mes_seleccionado),],# WHERE
+            ['horas:sum'], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            ['tipo_informe'] # GROUPBY
+        )
+        print(grouped, flush=True)
+        return grouped # devuelve array de tuplas
     
-
-
-class totales(models.Model):
-    _name = 'secretary.totales'
-    _description = 'Totales de la predicación'
-    _auto = False
-    _rec_name = 'id'
-
+    def _compute_horas(self):
+        select_fecha = self.mes_seleccionado
+        print("Debug: esto es select_fechas:  ",select_fecha, flush=True)
+        total_informes = self.env['secretary.informes'].search(['fecha','=','self.mes_seleccionado'])
+        total_informes_mapped = total_informes.mapped('horas')
+        total_horas = 0
+        for horas in total_informes_mapped:
+            total_horas = total_horas + horas
+        self.t_horas = total_horas
+        print("Las horas son:",total_horas, flush=True)
+    
+        ''' SUSTIDUIDA POR _informe_sort | TODO: Borrarla cuando no sea necesaria como referencia
     def _compute_date(self):
         informes = self.env['secretary.informes'].search([])
         fechas_filtered = informes.filtered(lambda f: f.año == '2022')
@@ -130,30 +172,7 @@ class totales(models.Model):
         fecha.sort(reverse=True)
         #print(fecha, flush=True)
         return fecha
-
-    def date(self, informes):
-        fecha = []
-        for fechas in informes:
-            fecha.append((fechas.fecha, fechas.fecha))
-        fecha = list(dict.fromkeys(fecha))
-        fecha.sort(reverse=True)
-        #print(fecha, flush=True)
-        return fecha
-    #base = fields.Many2one("secretary.informes") # Escoger el campo Fecha sin repetir
-    fecha = fields.Selection(_compute_date, string = 'Escoga un mes para auditar')
-    
-
-
-
-
- 
-
-
-
-
-
-
-
+    '''
 
 
 

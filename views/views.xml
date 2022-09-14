@@ -158,6 +158,9 @@
       <field name="arch" type="xml">
         <form string="Informes de predicación">
           <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="este_mes_aux_activo" type="object" class="oe_stat_button" string='Aux.30/50h' icon='fa-check-square-o'/>
+            </div>
             <group name="group_top" string="NOMBRE DEL PUBLICADOR">
               <field name="nombre" />
               <group name="group_left" string=''>
@@ -169,7 +172,9 @@
               <group name="group_right" string=' '>
                 <field name="año" />
                 <field name="videos" />
-                <field name="revisitas" />
+                <field name="cursos" />
+                <field name="tipo_informe" />
+                <field name="este_mes_aux" />
               </group>
             </group>
             <notebook>
@@ -206,7 +211,6 @@
           <field name="mes" />
           <field name="año" />
           <field name="nombre" />
-          <button name="fechas" string="Acción" class="oe_highlight" type="object"/>
         </tree>
       </field>
     </record>
@@ -276,35 +280,36 @@
     </record>
 
 
-    <!--MODELO TOTALES -->
+    <!--MODELO TOTALES MENSUALES -->
 
-    <record id="secretary_totales_action" model="ir.actions.act_window">
-      <field name="name">Totales</field>
-      <field name="res_model">secretary.totales</field>
-      <field name="view_mode">tree,form</field>      
-      <field name="help" type="html">
-        <h3 class="oe_view_nocontent_create">
-          TOTALES        
-        </h3>
-        <p>
-          Click en 'Nuevo' para generar el resumen del mes
-        </p>
+    <!-- Vista Form-->
+    <record id="wizard_totales_mensuales_view" model="ir.ui.view">
+      <field name="name">Generar informe mensual</field>
+      <field name="model">secretary.totales_mensuales</field>
+      <field name="arch" type="xml">
+        <form string="Generar resumen del mes">
+          <group>
+            <field name="mes_seleccionado" />
+          </group>
+          <footer>
+            <button name="sumar_horas" string="Imprimir" class="oe_right oe_highlight" type="object"/>
+            <button name="get_average_horas" string="Generar reporte" class="oe_right oe_highlight" type="object"/>
+            <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
+          </footer>
+        </form>
       </field>
     </record>
 
-    <!--record id="view_secretary_totales_form" model="ir.ui.view">
-      <field name="name">view.secretary.totales.form</field>
-      <field name="model">secretary.totales</field>
-      <field name="arch" type="xml">
-        <form string="Generar resumen del mes">
-          <sheet>
-            <group name="group_top" string="ESCOGA UN MES">
-              <field name="fecha" />
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record-->
+    <!-- Vista Actions-->
+    <record id="secretary_totales_mensuales_wizard" model="ir.actions.act_window">
+      <field name="name">Totales Mensuales</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">secretary.totales_mensuales</field>
+      <field name="view_id" ref="wizard_totales_mensuales_view"/>
+      <field name="view_mode">form</field>      
+      <field name="target">new</field>
+    </record>
+
 
 
         <!--MENUS COMUNES -->
@@ -335,8 +340,13 @@
     <menuitem
     id="menu_secretary_totales"
     name="Totales"
-    action="secretary_totales_action"     
     parent="menu_secretary_root"
+    sequence="0"/>
+    <menuitem
+    id="menu_secretary_totales_mensuales"
+    name="Totales mensuales"
+    action="secretary_totales_mensuales_wizard"     
+    parent="menu_secretary_totales"
     sequence="0"/>
 
 
