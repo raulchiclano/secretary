@@ -73,7 +73,7 @@ class informes(models.Model):
      #current_year = str(current_year)
 
 
-     nombre = fields.Many2one("secretary.publicadores", string='Publicador')
+     nombre = fields.Many2one("secretary.publicadores", string='Publicador', required=True)
      tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo', store=True)
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=lambda self: str((date.today().month)-1))
      current_year = datetime.strftime(datetime.today(),'%Y')
@@ -86,10 +86,8 @@ class informes(models.Model):
      videos = fields.Integer(string="Videos")
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
-     #is_regular = fields.Boolean(string = "Informe tipo regular", compute='_compute_is_regular')
-     #is_auxiliar = fields.Boolean(string = "Informe tipo auxiliar", compute='_compute_is_auxiliar')
-     este_mes_aux = fields.Boolean(string = "Aux. 30/50 horas", readonly=True)
-     tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe")
+     este_mes_aux = fields.Boolean(string = "Aux. 30/50 horas", readonly=True) #TODO: Integrarlo cuadno se filtre campos para mayor comodida y estetica
+     tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe", required=True)
 
      def este_mes_aux_activo(self):
         self.este_mes_aux = not self.este_mes_aux     
