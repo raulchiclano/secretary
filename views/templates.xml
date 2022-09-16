@@ -54,5 +54,51 @@
             </t>
           </t>
         </template>
+
+        <template id="secretary.report_totales_mensuales">
+          <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+              <t t-call="web.external_layout">
+                <div class="page">
+                  <h2>Informe Totales Mensuales</h2>
+                  <p>Mes: 
+                    <span t-field="o.mes"/>, <span t-field="o.año"/>
+                  </p>
+                  <p>Descripción:
+                    Reporte del informe agrupados por publicadores, auxiliares y regulares
+                  </p>
+                  <table>
+                    <colgroup span="1" style="width:10%;" />
+                    <colgroup span="5" style="width:16%;" />
+                    <thead>
+                      <tr>
+                        <!--Las Cabeceras de nuestra tabla-->
+                        <th scope="col" colspan="2">Mes</th>
+                        <th scope="col">Publicaciones</th>
+                        <th scope="col">Videos</th>
+                        <th scope="col">Horas</th>
+                        <th scope="col">Revisitas</th>
+                        <th scope="col">Cursos bíblicos</th>
+                      </tr> 
+                    </thead>
+
+                    <tbody>
+                      <t t-set="totales" t-value="docs.get_sum_totales_mensuales()"/>
+                      <tr t-foreach="totales" t-as="total">
+                        <!--t t-set="t_horas" t-value="total['horas][0]"/-->
+                        <td>
+                          <span t-esc="totales[0]['horas']"/>
+                        </td>
+                        <td>
+                          <span t-esc="total['horas']"/>
+                        </td>
+                      </tr> 
+                    </tbody>
+                  </table>  
+                </div>
+              </t>
+            </t>
+          </t>
+        </template>
     </data>
 </odoo>

@@ -27,6 +27,7 @@
         'views/views.xml',
         'views/templates.xml',
         'reports/informe.xml',
+        'reports/totales_mensuales.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -99,8 +99,17 @@ class informes(models.Model):
 
      @api.onchange('nombre')
      def set_tipo_informe(self):
-        print("Toc, toc", flush=True)
-        self.tipo_informe = "%s" %(self.tipo_publicador)        
+        self.tipo_informe = "%s" %(self.tipo_publicador)  
+
+    # AGRUPACION DE TOTALES SUMADOS PARA EL REPORTE "TOTALES MENSUALES"
+     def get_sum_totales_mensuales(self):
+        grouped = self.env['secretary.informes'].read_group(
+            [('fecha', '=', '8-2022'),],# WHERE
+            [('horas:sum'),('publicaciones:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            ['tipo_informe'] # GROUPBY
+        )
+        print(grouped, flush=True)
+        return grouped # devuelve array de tuplas      
 
      
 
@@ -138,11 +147,11 @@ class TotalesMensuales(models.TransientModel):
         for informe in total_informes_filtered:
             print(informe.tipo_publicador, flush=True)
         
-    # AGRUPACIÓN (read_group)
-    def get_average_horas(self):
+    # AGRUPACIÓN (read_group) COPIADA A INFORME | TODO: EN DESUSO
+    def get_sum_totales_mensuales(self):
         grouped = self.env['secretary.informes'].read_group(
             [('fecha', '=', self.mes_seleccionado),],# WHERE
-            ['horas:sum'], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            [('horas:sum'),('publicaciones:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
             ['tipo_informe'] # GROUPBY
         )
         print(grouped, flush=True)
@@ -189,6 +198,19 @@ class InformesReport(models.AbstractModel):
             'docs': self.env['secretary.publicadores'].browse(docids)
         }
 
+class TotalesMensualesReport(models.AbstractModel):
+    _name='report.secretary.report_totales_mensuales'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        report_obj = self.env['ir.actions.report']
+        report = report_obj._get_report_from_name('secretary.report_totales_mensuales')
+        return {
+            'doc_ids': docids,
+            'doc_model': self.env['secretary.informes'],
+            'docs': self.env['secretary.informes'].browse(docids)
+        }
+        
 
 
 
