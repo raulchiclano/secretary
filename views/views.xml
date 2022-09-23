@@ -292,7 +292,7 @@
             <field name="mes_seleccionado" />
           </group>
           <footer>
-            <button name="sumar_horas" string="Imprimir" class="oe_right oe_highlight" type="object"/>
+            <button name="get_sum_totales_mensuales" string="Imprimir" class="oe_right oe_highlight" type="object"/>
             <button name="get_sum_totales_mensuales" string="Generar reporte" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
           </footer>

@@ -73,8 +73,8 @@ class informes(models.Model):
      #current_year = str(current_year)
 
 
-     nombre = fields.Many2one("secretary.publicadores", string='Publicador', required=True)
-     tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo', store=True)
+     nombre = fields.Many2one("secretary.publicadores", string='Publicador')
+     tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo')
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=lambda self: str((date.today().month)-1))
      current_year = datetime.strftime(datetime.today(),'%Y')
      fecha = fields.Char(compute="_compute_date", store=True)
@@ -87,7 +87,7 @@ class informes(models.Model):
      revisitas = fields.Integer(string="Revisitas")
      notas = fields.Text(string='Notas:')
      este_mes_aux = fields.Boolean(string = "Aux. 30/50 horas", readonly=True) #TODO: Integrarlo cuadno se filtre campos para mayor comodida y estetica
-     tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe", required=True)
+     tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe", default='P')
 
      def este_mes_aux_activo(self):
         self.este_mes_aux = not self.este_mes_aux     
@@ -98,17 +98,20 @@ class informes(models.Model):
             record.fecha = "%s-%s" %(record.mes,record.año)
 
      @api.onchange('nombre')
-     def set_tipo_informe(self):
-        self.tipo_informe = "%s" %(self.tipo_publicador)  
+     def _set_tipo_informe(self):
+        print("Toc,toc", self.nombre.tipo, flush=True)
+        if self.nombre.tipo != False:
+            self.tipo_informe = "%s" %(self.nombre.tipo)
+        else:
+            pass
 
     # AGRUPACION DE TOTALES SUMADOS PARA EL REPORTE "TOTALES MENSUALES"
      def get_sum_totales_mensuales(self):
         grouped = self.env['secretary.informes'].read_group(
-            [('fecha', '=', '8-2022'),],# WHERE
-            [('horas:sum'),('publicaciones:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            [('fecha', '=', self.fecha),],# WHERE
+            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
             ['tipo_informe'] # GROUPBY
         )
-        print(grouped, flush=True)
         return grouped # devuelve array de tuplas      
 
      
@@ -151,7 +154,7 @@ class TotalesMensuales(models.TransientModel):
     def get_sum_totales_mensuales(self):
         grouped = self.env['secretary.informes'].read_group(
             [('fecha', '=', self.mes_seleccionado),],# WHERE
-            [('horas:sum'),('publicaciones:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
             ['tipo_informe'] # GROUPBY
         )
         print(grouped, flush=True)
@@ -167,23 +170,10 @@ class TotalesMensuales(models.TransientModel):
             total_horas = total_horas + horas
         self.t_horas = total_horas
         print("Las horas son:",total_horas, flush=True)
+
+
     
-        ''' SUSTIDUIDA POR _informe_sort | TODO: Borrarla cuando no sea necesaria como referencia
-    def _compute_date(self):
-        informes = self.env['secretary.informes'].search([])
-        fechas_filtered = informes.filtered(lambda f: f.año == '2022')
-        fecha = []
-        for fechas in fechas_filtered:
-            fecha.append((fechas.fecha, fechas.fecha))
-        fecha = list(dict.fromkeys(fecha))
-        fecha.sort(reverse=True)
-        #print(fecha, flush=True)
-        return fecha
-    '''
-
-
-
-
+    
 
 class InformesReport(models.AbstractModel):
     _name='report.secretary.informe_mensual'
