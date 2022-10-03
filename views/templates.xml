@@ -1,6 +1,16 @@
 <odoo>
     <data>
-        <template id="tarjeta_publicador">
+      
+        <template id="custom_style" name="custom_style_template">
+          <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/secretary/static/src/css/style.css"/>
+          </xpath>
+        </template>
+      
+      
+      <!-- REPORTE DE LA TARJETA DE PUBLICADOR-->
+
+        <template id="report_tarjeta_publicador">
           <t t-call="web.html_container">
             <t t-foreach="docs" t-as="publicador">
              <t t-call="web.external_layout">
@@ -55,11 +65,10 @@
           </t>
         </template>
 
+
+        <!-- REPORTE DEL TOTAL MENSUAL-->
+
         <template id="secretary.report_totales_mensuales">
-          <style type="text/css">
-            .h5 {text-align: center !important; vertical-align: middle !important;}
-            .td {background:#F8F8F7 !important;}
-          </style>
           <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
               <t t-call="web.external_layout">
@@ -85,7 +94,7 @@
                     <tbody style="background: rgba(255, 128, 0, 0.3); border: 1px solid rgba(200, 100, 0, 0.3);">
                       <t t-set="totales" t-value="docs.get_sum_totales_mensuales()"/>
                       <tr>
-                        <td style="background:#F8F8F7">
+                        <td style="background:#F8F8F7"><!-- TODO: Peta si no hay auxiliares o regulares-->
                           <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[1]['tipo_informe_count']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
@@ -157,5 +166,109 @@
             </t>
           </t>
         </template>
+
+        <!-- TEST PRUEBAS REPORTE DEL TOTAL MENSUAL-->
+
+        <template id="report_test">
+          <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+              <t t-call="web.external_layout">
+                <div class="page">
+                  <h2>Informe Totales Mensuales</h2>
+                  <h3>  
+                    <span t-field="o.mes_seleccionado"/>
+                  </h3>
+                  <p>Descripción:
+                    Reporte del informe agrupados por publicadores, auxiliares y regulares
+                  </p>
+                  <table class="text-center" border="1" style="width:100%;">
+                    <colgroup span="3" style="width:35%;" />
+                    <thead style="background: #E36600; padding: 1px" >
+                      <tr>
+                        <!--Las Cabeceras de nuestra tabla-->
+                        <th class="text-center" scope="col"><h4 style="color:#FFFFFF">PUBLICADORES</h4></th>
+                        <th class="text-center" scope="col"><h4 style="color:#FFFFFF">PREC. AUXILIARES</h4></th>
+                        <th class="text-center" scope="col"><h4 style="color:#FFFFFF">PREC. REGULARES</h4></th>
+                      </tr> 
+                    </thead>
+
+                    <tbody style="background: rgba(255, 128, 0, 0.3); border: 1px solid rgba(200, 100, 0, 0.3);">
+                      <t t-set="totales" t-value="docs.get_sum_totales_mensuales()"/>
+                      <t t-log="totales"/>
+                      <tr>
+                        <td style="background:#F8F8F7"><!-- TODO: Peta si no hay auxiliares o regulares-->
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[1]['tipo_informe_count']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[0]['tipo_informe_count']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[2]['tipo_informe_count']"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[1]['publicaciones']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[0]['publicaciones']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[2]['publicaciones']"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[1]['videos']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[0]['videos']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[2]['videos']"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[1]['horas']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[0]['horas']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[2]['horas']"/>
+                        </td>
+                      </tr> 
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[1]['revisitas']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[0]['revisitas']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[2]['revisitas']"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[1]['cursos']"/><p> </p>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[0]['cursos']"/>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[2]['cursos']"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>  
+                </div>
+              </t>
+            </t>
+          </t>
+        </template>
+
+        
     </data>
 </odoo>

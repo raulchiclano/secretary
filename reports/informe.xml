@@ -6,7 +6,7 @@
             id="secretary_tarjeta_report"
             model="secretary.publicadores"
             report_type="qweb-pdf"
-            name="secretary.tarjeta_publicador"
+            name="secretary.report_tarjeta_publicador"
             file="Tarjeta_publicador"
             attachment_use="True"
         />

@@ -179,7 +179,7 @@
             </group>
             <notebook>
               <page string="Description">
-                  <field name="notas"/>
+                  <field name="notas" class="form-control" />
               </page>
             </notebook>
           </sheet>
@@ -229,7 +229,7 @@
             <t t-name="kanban-box">
               <div t-attf-class="oe_kanban_global_click">
                 <div class="oe_kanban_details">
-                  <h3>
+                  <h3 class="text-cool">
                     <field name="nombre" />
                   </h3>                                
                   <div t-if="record.horas.value">
@@ -285,15 +285,14 @@
     <!-- Vista Form-->
     <record id="wizard_totales_mensuales_view" model="ir.ui.view">
       <field name="name">Generar informe mensual</field>
-      <field name="model">secretary.totales_mensuales</field>
+      <field name="model">secretary.test_report</field>
       <field name="arch" type="xml">
         <form string="Generar resumen del mes">
           <group>
             <field name="mes_seleccionado" />
           </group>
           <footer>
-            <button name="get_sum_totales_mensuales" string="Imprimir" class="oe_right oe_highlight" type="object"/>
-            <button name="get_sum_totales_mensuales" string="Generar reporte" class="oe_right oe_highlight" type="object"/>
+            <button name="print_report_test" string="Imprimir" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
           </footer>
         </form>
@@ -304,7 +303,7 @@
     <record id="secretary_totales_mensuales_wizard" model="ir.actions.act_window">
       <field name="name">Totales Mensuales</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">secretary.totales_mensuales</field>
+      <field name="res_model">secretary.test_report</field>
       <field name="view_id" ref="wizard_totales_mensuales_view"/>
       <field name="view_mode">form</field>      
       <field name="target">new</field>

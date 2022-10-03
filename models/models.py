@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Para ver print() en los logs en Docker
-import logging
-from select import select
+#import logging
+#rom select import select
 
-_logger = logging.getLogger(__name__)
-_logger.info('Mensaje')
+#_logger = logging.getLogger(__name__)
+#_logger.info('Mensaje')
 # ----------------------------------------
 
 
@@ -126,8 +126,9 @@ class informes(models.Model):
 
 
 class TotalesMensuales(models.TransientModel):
-    _name = 'secretary.totales_mensuales'
+    _name = 'secretary.test_report'
     _description = 'Totales mensuales de la predicación'
+   # _inherit = 'secretary.informes'
    # _auto = False
    # _rec_name = 'id'
 
@@ -142,15 +143,18 @@ class TotalesMensuales(models.TransientModel):
         return menu_fecha
 
     mes_seleccionado = fields.Selection(_informe_sort, string = "Escoga mes para generar informe", required = True)
+    
+    def print_report_test(self):
+        '''grouped = self.env['secretary.informes'].read_group(
+            [('fecha', '=', self.mes_seleccionado),],# WHERE
+            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+            ['tipo_informe'] # GROUPBY
+        )'''
+        data = {
+            'mes_seleccionado': self.mes_seleccionado,
+        }
+        return self.env.ref('secretary.action_test_report').report_action(self)
 
-    def sumar_horas(self):
-        print("Hasta aquí el boton funciona",self.mes_seleccionado ,flush=True)
-        total_informes = self.env['secretary.informes'].search([])
-        total_informes_filtered = total_informes.filtered(lambda i : i.fecha == self.mes_seleccionado)
-        for informe in total_informes_filtered:
-            print(informe.tipo_publicador, flush=True)
-        
-    # AGRUPACIÓN (read_group) COPIADA A INFORME | TODO: EN DESUSO
     def get_sum_totales_mensuales(self):
         grouped = self.env['secretary.informes'].read_group(
             [('fecha', '=', self.mes_seleccionado),],# WHERE
@@ -159,6 +163,23 @@ class TotalesMensuales(models.TransientModel):
         )
         print(grouped, flush=True)
         return grouped # devuelve array de tuplas
+
+
+    
+
+
+
+#Extras para probar cosas:
+'''
+    def sumar_horas(self):
+        print("Hasta aquí el boton funciona",self.mes_seleccionado ,flush=True)
+        total_informes = self.env['secretary.informes'].search([])
+        total_informes_filtered = total_informes.filtered(lambda i : i.fecha == self.mes_seleccionado)
+        for informe in total_informes_filtered:
+            print(informe.tipo_publicador, flush=True)
+        
+    # AGRUPACIÓN (read_group) COPIADA A INFORME | TODO: EN DESUSO
+    
     
     def _compute_horas(self):
         select_fecha = self.mes_seleccionado
@@ -170,37 +191,23 @@ class TotalesMensuales(models.TransientModel):
             total_horas = total_horas + horas
         self.t_horas = total_horas
         print("Las horas son:",total_horas, flush=True)
+'''
 
 
-    
-    
-
+ 
+# MODELO PARA REPORTE TARJETA DE PUBLICADORES       
 class InformesReport(models.AbstractModel):
     _name='report.secretary.informe_mensual'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         report_obj = self.env['ir.actions.report']
-        report = report_obj._get_report_from_name('secretary.informe_mensual')
+        report = report_obj._get_report_from_name('secretary.report_tarjeta_publicador')
         return {
             'doc_ids': docids,
-            'doc_model': self.env['secretary.tarjeta_publicador'],
+            'doc_model': self.env['secretary.publicadores'],
             'docs': self.env['secretary.publicadores'].browse(docids)
         }
-
-class TotalesMensualesReport(models.AbstractModel):
-    _name='report.secretary.report_totales_mensuales'
-
-    @api.model
-    def _get_report_values(self, docids, data=None):
-        report_obj = self.env['ir.actions.report']
-        report = report_obj._get_report_from_name('secretary.report_totales_mensuales')
-        return {
-            'doc_ids': docids,
-            'doc_model': self.env['secretary.informes'],
-            'docs': self.env['secretary.informes'].browse(docids)
-        }
-        
 
 
 
