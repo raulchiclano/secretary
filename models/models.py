@@ -175,7 +175,7 @@ class TotalesMensuales(models.TransientModel):
     def get_publicadores_activos(self):
         p_activos = self.env['secretary.informes'].read_group(
             [('horas', '>', 0),],
-            [('horas:avg'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum'),('nombre:array_agg')], 
+            [('nombre:array_agg')], 
             ['fecha']
         )
         print(p_activos, flush=True)
