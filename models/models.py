@@ -105,19 +105,7 @@ class informes(models.Model):
         else:
             pass
 
-    # AGRUPACION DE TOTALES SUMADOS PARA EL REPORTE "TOTALES MENSUALES"
-     def get_sum_totales_mensuales(self):
-        grouped = self.env['secretary.informes'].read_group(
-            [('fecha', '=', self.fecha),],# WHERE
-            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
-            ['tipo_informe'] # GROUPBY
-        )
-        return grouped # devuelve array de tuplas      
-
-     
-
-
-
+   
      _sql_constraints = [
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
@@ -126,7 +114,7 @@ class informes(models.Model):
 
 
 class TotalesMensuales(models.TransientModel):
-    _name = 'secretary.test_report'
+    _name = 'secretary.totales_mensuales_report'
     _description = 'Totales mensuales de la predicación'
    # _inherit = 'secretary.informes'
    # _auto = False
@@ -145,15 +133,7 @@ class TotalesMensuales(models.TransientModel):
     mes_seleccionado = fields.Selection(_informe_sort, string = "Escoga mes para generar informe", required = True)
     
     def print_report_test(self):
-        '''grouped = self.env['secretary.informes'].read_group(
-            [('fecha', '=', self.mes_seleccionado),],# WHERE
-            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
-            ['tipo_informe'] # GROUPBY
-        )'''
-        data = {
-            'mes_seleccionado': self.mes_seleccionado,
-        }
-        return self.env.ref('secretary.action_test_report').report_action(self)
+        return self.env.ref('secretary.action_totalesMensuales_report').report_action(self)
 
     def get_sum_totales_mensuales(self):
         grouped = self.env['secretary.informes'].read_group(
@@ -193,38 +173,6 @@ class TotalesMensuales(models.TransientModel):
         return len(set(count))
 
            
-
-
-
-    
-
-
-
-#Extras para probar cosas:
-'''
-    def sumar_horas(self):
-        print("Hasta aquí el boton funciona",self.mes_seleccionado ,flush=True)
-        total_informes = self.env['secretary.informes'].search([])
-        total_informes_filtered = total_informes.filtered(lambda i : i.fecha == self.mes_seleccionado)
-        for informe in total_informes_filtered:
-            print(informe.tipo_publicador, flush=True)
-        
-    # AGRUPACIÓN (read_group) COPIADA A INFORME | TODO: EN DESUSO
-    
-    
-    def _compute_horas(self):
-        select_fecha = self.mes_seleccionado
-        print("Debug: esto es select_fechas:  ",select_fecha, flush=True)
-        total_informes = self.env['secretary.informes'].search(['fecha','=','self.mes_seleccionado'])
-        total_informes_mapped = total_informes.mapped('horas')
-        total_horas = 0
-        for horas in total_informes_mapped:
-            total_horas = total_horas + horas
-        self.t_horas = total_horas
-        print("Las horas son:",total_horas, flush=True)
-'''
-
-
  
 # MODELO PARA REPORTE TARJETA DE PUBLICADORES       
 class InformesReport(models.AbstractModel):

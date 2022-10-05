@@ -285,7 +285,7 @@
     <!-- Vista Form-->
     <record id="wizard_totales_mensuales_view" model="ir.ui.view">
       <field name="name">Generar informe mensual</field>
-      <field name="model">secretary.test_report</field>
+      <field name="model">secretary.totales_mensuales_report</field>
       <field name="arch" type="xml">
         <form string="Generar resumen del mes">
           <group>
@@ -304,7 +304,7 @@
     <record id="secretary_totales_mensuales_wizard" model="ir.actions.act_window">
       <field name="name">Totales Mensuales</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">secretary.test_report</field>
+      <field name="res_model">secretary.totales_mensuales_report</field>
       <field name="view_id" ref="wizard_totales_mensuales_view"/>
       <field name="view_mode">form</field>      
       <field name="target">new</field>
