@@ -182,6 +182,9 @@
                     Reporte del informe agrupados por publicadores, auxiliares y regulares
                   </p>
                   <table class="text-center" border="1" style="width:100%;">
+                  <t t-set="publicadores_activos" t-value="docs.get_publicadores_activos()"/>   
+                  <caption align="bottom">Publicadores activos este mes: <span t-esc="publicadores_activos"/></caption>  
+    
                     <colgroup span="3" style="width:35%;" />
                     <thead style="background: #E36600; padding: 1px" >
                       <tr>
@@ -262,7 +265,47 @@
                         </td>
                       </tr>
                     </tbody>
-                  </table>  
+                  </table>
+                </div>
+
+
+                
+                <div class="page">
+                  <table class="table table-success table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th class="text-center" scope="col" colspan="2">TOTALES</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                      <t t-set="global_totales" t-value="docs.get_totales()"/>
+                      <tr>
+                        <th scope="row">Cantidad de informes</th>
+                        <td><span t-esc="global_totales[0]['fecha_count']"/></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Publicaciones</th>
+                        <td><span t-esc="global_totales[0]['publicaciones']"/></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Videos</th>
+                        <td><span t-esc="global_totales[0]['videos']"/></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Horas</th>
+                        <td><span t-esc="global_totales[0]['horas']"/></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Revisitas</th>
+                        <td><span t-esc="global_totales[0]['revisitas']"/></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Cursos bíblicos</th>
+                        <td><span t-esc="global_totales[0]['cursos']"/></td>
+                      </tr>
+                    </tbody>
+                  </table>
+  
                 </div>
               </t>
             </t>

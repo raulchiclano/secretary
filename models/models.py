@@ -164,6 +164,37 @@ class TotalesMensuales(models.TransientModel):
         print(grouped, flush=True)
         return grouped # devuelve array de tuplas
 
+    def get_totales(self):
+        total = self.env['secretary.informes'].read_group(
+            [('fecha', '=', self.mes_seleccionado),],
+            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], 
+            ['fecha']
+        )
+        return total
+
+    def get_publicadores_activos(self):
+        p_activos = self.env['secretary.informes'].read_group(
+            [('horas', '>', 0),],
+            [('horas:avg'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum'),('nombre:array_agg')], 
+            ['fecha']
+        )
+        print(p_activos, flush=True)
+        return self.filtrar_ultimos_meses(p_activos)
+
+    def filtrar_ultimos_meses(self, lista):
+        count = []
+        for i in range(-6, 0):
+            try:
+                valor = lista[i]['nombre']
+            except IndexError:
+                valor = None
+            if valor != None:
+                count.extend(valor)
+        return len(set(count))
+
+           
+
+
 
     
 

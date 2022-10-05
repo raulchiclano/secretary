@@ -293,6 +293,7 @@
           </group>
           <footer>
             <button name="print_report_test" string="Imprimir" class="oe_right oe_highlight" type="object"/>
+            <button name="get_publicadores_activos" string="Test" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
           </footer>
         </form>
