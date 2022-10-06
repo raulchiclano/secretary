@@ -132,7 +132,7 @@ class TotalesMensuales(models.TransientModel):
 
     mes_seleccionado = fields.Selection(_informe_sort, string = "Escoga mes para generar informe", required = True)
     
-    def print_report_test(self):
+    def print_report_totales_mensuales(self):
         return self.env.ref('secretary.action_totalesMensuales_report').report_action(self)
 
     def get_sum_totales_mensuales(self):

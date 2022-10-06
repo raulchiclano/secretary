@@ -61,12 +61,23 @@
         </template>
 
 
-        <!-- TEST PRUEBAS REPORTE DEL TOTAL MENSUAL-->
+        <!-- REPORTE DEL TOTAL MENSUAL-->
+        <!-- CABECERA-->
+        <template id="cabecera_totalesMensuales">
+          <xpath expr="//div[@class='header]" position="replace">
+            <div class="header">
+              <div class="row">
 
+              </div>
+            </div>
+          </xpath>
+        </template>
+
+        <!-- CUERPO-->
         <template id="report_totalesMensuales">
           <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-              <t t-call="web.external_layout">
+              <t t-call="web.basic_layout">
                 <div class="page">
                   <h2>Informe Totales Mensuales</h2>
                   <h3>  
@@ -94,68 +105,68 @@
                       <t t-log="totales"/>
                       <tr>
                         <td style="background:#F8F8F7"><!-- TODO: Peta si no hay auxiliares o regulares-->
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[1]['tipo_informe_count']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)==2" t-esc="totales[1]['tipo_informe_count']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[0]['tipo_informe_count']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[2]['tipo_informe_count']"/>
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)==3" t-esc="totales[2]['tipo_informe_count']"/>
                         </td>
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[1]['publicaciones']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)==2" t-esc="totales[1]['publicaciones']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[0]['publicaciones']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[2]['publicaciones']"/>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)==3" t-esc="totales[2]['publicaciones']"/>
                         </td>
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[1]['videos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)==2" t-esc="totales[1]['videos']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[0]['videos']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[2]['videos']"/>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)==3" t-esc="totales[2]['videos']"/>
                         </td>
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[1]['horas']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)==2" t-esc="totales[1]['horas']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[0]['horas']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[2]['horas']"/>
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)==3" t-esc="totales[2]['horas']"/>
                         </td>
                       </tr> 
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[1]['revisitas']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)==2" t-esc="totales[1]['revisitas']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[0]['revisitas']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[2]['revisitas']"/>
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)==3" t-esc="totales[2]['revisitas']"/>
                         </td>
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[1]['cursos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)==2" t-esc="totales[1]['cursos']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[0]['cursos']"/>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[2]['cursos']"/>
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)==3" t-esc="totales[2]['cursos']"/>
                         </td>
                       </tr>
                     </tbody>
