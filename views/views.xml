@@ -27,9 +27,23 @@
                 <field name="direccion" />
                 <field name="tipo" />
                 <field name="grupo" />
-                <field name="image" widget='image' />
               </group>
+              
             </group>
+            <notebook>
+              <page string="INFORMES">
+                <field name="informe_id" widget="one2may_list">
+                  <tree>
+                    <field name="fecha"/>
+                    <field name="horas"/>
+                    <field name="revisitas"/>
+                    <field name="publicaciones"/>
+                    <field name="videos"/>
+                    <field name="cursos"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>

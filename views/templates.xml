@@ -120,71 +120,113 @@
                       <t t-set="totales" t-value="docs.get_sum_totales_mensuales()"/>
                       <t t-log="totales"/>
                       <tr>
-                        <td style="background:#F8F8F7"><!-- TODO: Peta si no hay auxiliares o regulares-->
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)>=2" t-esc="totales[1]['tipo_informe_count']"/><p> </p>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cantidad</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['tipo_informe_count']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[0]['tipo_informe_count']"/>
+                          <h5 style="background:#F0F0EF">Cantidad</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['tipo_informe_count']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)==3" t-esc="totales[2]['tipo_informe_count']"/>
+                          <h5 style="background:#F0F0EF">Cantidad</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['tipo_informe_count']"/><p> </p></t>
                         </td>
                       </tr>
+
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)>=2" t-esc="totales[1]['publicaciones']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['publicaciones']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[0]['publicaciones']"/>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['publicaciones']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)==3" t-esc="totales[2]['publicaciones']"/>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['publicaciones']"/><p> </p></t>
                         </td>
                       </tr>
+                      
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)>=2" t-esc="totales[1]['videos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['videos']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[0]['videos']"/>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['videos']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)==3" t-esc="totales[2]['videos']"/>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['videos']"/><p> </p></t>
                         </td>
                       </tr>
+                      
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)>=2" t-esc="totales[1]['horas']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Horas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['horas']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[0]['horas']"/>
+                          <h5 style="background:#F0F0EF">Horas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['horas']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)==3" t-esc="totales[2]['horas']"/>
-                        </td>
-                      </tr> 
-                      <tr>
-                        <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)>=2" t-esc="totales[1]['revisitas']"/><p> </p>
-                        </td>
-                        <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[0]['revisitas']"/>
-                        </td>
-                        <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)==3" t-esc="totales[2]['revisitas']"/>
+                          <h5 style="background:#F0F0EF">Horas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['horas']"/><p> </p></t>
                         </td>
                       </tr>
+                      
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)>=2" t-esc="totales[1]['cursos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Revisitas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['revisitas']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[0]['cursos']"/>
+                          <h5 style="background:#F0F0EF">Revisitas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['revisitas']"/><p> </p></t>
                         </td>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)==3" t-esc="totales[2]['cursos']"/>
+                          <h5 style="background:#F0F0EF">Revisitas</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['revisitas']"/><p> </p></t>
                         </td>
                       </tr>
+                      
+                      <tr>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'P'" t-esc="t['cursos']"/><p> </p></t>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'A'" t-esc="t['cursos']"/><p> </p></t>
+                        </td>
+                        <td style="background:#F8F8F7">
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5>
+                          <t t-foreach="totales" t-as="t">
+                          <span t-if="t['tipo_informe'] == 'R'" t-esc="t['cursos']"/><p> </p></t>
+                        </td>
+                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
