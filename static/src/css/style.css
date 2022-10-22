@@ -1,3 +1,23 @@
 .text-cool{
-    color: #51d378 !important;
+    color: #1E2838 !important;
 }
+
+.o_main_navbar{
+    background-color: #17929f !important;
+    border-color: #17929f !important;
+}
+
+.o_menu_systray::before{
+    background-color: #17929f !important;
+    border-color: #17929f !important;
+}
+
+.btn-primary{
+    background-color: #9E2667 !important;
+    border-color: #9E2667 !important;
+}
+
+.publicadores-name{
+    background-color: #189cab56 !important;
+}
+

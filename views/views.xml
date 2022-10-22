@@ -10,7 +10,8 @@
         <form string="Publicadores">
           <sheet>
             <div class="oe_button_box" name="button_box">
-              <button name="f_activo" type="object" class="oe_stat_button" string='Activo/Inactivo' icon='fa-check-square-o'/>
+              <button name="f_activo" type="object" class="oe_stat_button" string='Inactivo' icon='fa-toggle-off' attrs="{'invisible':[('activo','=',True),]}"/>
+              <button name="f_activo" type="object" class="oe_stat_button" string='Activo' icon='fa-toggle-on' attrs="{'invisible':[('activo','=',False),]}"/>
             </div>
             <group name="group_top" string="DATOS DEL PUBLICADOR">
               <group name="group_left">
@@ -19,7 +20,7 @@
                 <field name="fecha_bautismo" />
                 <field name="telefono" />
                 <field name="email" />
-                <field name="activo" />
+                <field name="activo" invisible="1"/>
               </group>
               <group name="group_right" string="">
                 <field name="genero" />
@@ -54,13 +55,19 @@
       <field name="arch" type="xml">
         <kanban default_order="grupo">
           <field name="name"/>
+          <field name="grupo"/>
+          <field name="tipo"/>
+          <field name="email"/>
           <templates>
             <t t-name="kanban-box">
               <div t-attf-class="oe_kanban_global_click">
-                <div class="oe_kanban_details">
-                  <h3>
+                <div class="card-body">
+                  <h3 class="alert publicadores-name text-center">
                     <field name="name" />
                   </h3>
+                  <h4 class="text-center">Grupo nº <field name="grupo" /></h4>
+                  <p><field name="tipo"/></p>
+                  <p><field name="email"/></p>
                 </div>
                 
               </div>
@@ -293,7 +300,7 @@
           </group>
           <footer>
             <button name="print_report_totales_mensuales" string="Imprimir" class="oe_right oe_highlight" type="object"/>
-            <button name="get_publicadores_activos" string="Test" class="oe_right oe_highlight" type="object"/>
+            <button name="get_publicadores_irregulares" string="Test" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
           </footer>
         </form>

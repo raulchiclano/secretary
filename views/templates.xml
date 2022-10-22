@@ -62,12 +62,27 @@
 
 
         <!-- REPORTE DEL TOTAL MENSUAL-->
-        <!-- CABECERA-->
+
+
+          <!-- FORMATO PAPEL-->
+        <record id="format_total_mensual" model="report.paperformat">
+          <field name="name">Total_mensual Format</field>
+          <field name="margin_top">1</field>
+          <field name="margin_bottom">12</field>
+          <field name="header_spacing">10</field>
+
+        </record>  
+          <!-- CABECERA - EN DESUSO - SOLO COMO REFERENCIA-->
         <template id="cabecera_totalesMensuales">
           <xpath expr="//div[@class='header]" position="replace">
             <div class="header">
               <div class="row">
-
+                <h2 class="text-center col-12">
+                  Informe Totales Mensuales
+                </h2>
+              </div>
+              <div class="mx-auto" style="width: 130px;">
+                <h2 class="badge bg-dark text-center text-white" style="width: 8rem;"><span t-field="o.mes_seleccionado"/></h2>
               </div>
             </div>
           </xpath>
@@ -78,14 +93,15 @@
           <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
               <t t-call="web.basic_layout">
+                <t t-call="secretary.cabecera_totalesMensuales"/>
+
                 <div class="page">
-                  <h2>Informe Totales Mensuales</h2>
-                  <h3>  
-                    <span t-field="o.mes_seleccionado"/>
-                  </h3>
-                  <p>Descripción:
+                  <p class="lead">Descripción:
                     Reporte del informe agrupados por publicadores, auxiliares y regulares
                   </p>
+                  <h2 class="text-center col-12">
+                  Informe Totales Mensuales
+                  </h2>
                   <table class="text-center" border="1" style="width:100%;">
                   <t t-set="publicadores_activos" t-value="docs.get_publicadores_activos()"/>   
                   <caption align="bottom">Publicadores activos este mes: <span t-esc="publicadores_activos"/></caption>  
@@ -105,7 +121,7 @@
                       <t t-log="totales"/>
                       <tr>
                         <td style="background:#F8F8F7"><!-- TODO: Peta si no hay auxiliares o regulares-->
-                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)==2" t-esc="totales[1]['tipo_informe_count']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Cantidad</h5><span t-if="len(totales)>=2" t-esc="totales[1]['tipo_informe_count']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Cantidad</h5><span t-esc="totales[0]['tipo_informe_count']"/>
@@ -116,7 +132,7 @@
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)==2" t-esc="totales[1]['publicaciones']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Publicaciones</h5><span t-if="len(totales)>=2" t-esc="totales[1]['publicaciones']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Publicaciones</h5><span t-esc="totales[0]['publicaciones']"/>
@@ -127,7 +143,7 @@
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)==2" t-esc="totales[1]['videos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-if="len(totales)>=2" t-esc="totales[1]['videos']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Presentaciones de videos</h5><span t-esc="totales[0]['videos']"/>
@@ -138,7 +154,7 @@
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)==2" t-esc="totales[1]['horas']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Horas</h5><span t-if="len(totales)>=2" t-esc="totales[1]['horas']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Horas</h5><span t-esc="totales[0]['horas']"/>
@@ -149,7 +165,7 @@
                       </tr> 
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)==2" t-esc="totales[1]['revisitas']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Revisitas</h5><span t-if="len(totales)>=2" t-esc="totales[1]['revisitas']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Revisitas</h5><span t-esc="totales[0]['revisitas']"/>
@@ -160,7 +176,7 @@
                       </tr>
                       <tr>
                         <td style="background:#F8F8F7">
-                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)==2" t-esc="totales[1]['cursos']"/><p> </p>
+                          <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-if="len(totales)>=2" t-esc="totales[1]['cursos']"/><p> </p>
                         </td>
                         <td style="background:#F8F8F7">
                           <h5 style="background:#F0F0EF">Cursos bíblicos</h5><span t-esc="totales[0]['cursos']"/>
@@ -176,7 +192,7 @@
 
                 
                 <div class="page">
-                  <table class="table table-success table-striped table-hover">
+                  <table class="table table-active table-striped table-hover">
                     <thead>
                       <tr>
                         <th class="text-center" scope="col" colspan="2">TOTALES</th>
@@ -210,13 +226,31 @@
                       </tr>
                     </tbody>
                   </table>
-  
+                </div>
+
+                <div class="card-header">
+                  Atención
+                </div>
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <p>Publicadores que no han informado todavía:</p>
+                    <t t-set="irregulares" t-value="docs.get_publicadores_irregulares()"/>
+                    <t t-foreach="[1,2,3,4,5,6,7,8]" t-as="control">
+                      <t t-foreach="irregulares" t-as="irregular">
+                        <t t-if="irregular.grupo[0]['name'] == control">
+                          <p class="blockquote-footer"><span t-field="irregular.name"/> [Grupo_<span t-esc="irregular.grupo[0]['name']"/>] 
+                          </p>
+                          
+                        </t>
+                      </t>
+                    </t>
+                    
+                  </blockquote>
                 </div>
               </t>
             </t>
           </t>
         </template>
-
-        
+      
     </data>
 </odoo>

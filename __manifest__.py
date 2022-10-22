@@ -33,6 +33,12 @@
     'demo': [
         'demo/demo.xml',
     ],
-    
+
+    'assets': {
+        'web.assets_backend': [
+            'secretary/static/src/css/style.css',
+            'secretary/static/src/js/*',
+        ]
+    },
     
 }

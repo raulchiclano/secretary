@@ -172,6 +172,19 @@ class TotalesMensuales(models.TransientModel):
                 count.extend(valor)
         return len(set(count))
 
+    def get_publicadores_irregulares(self):
+        lista_conInforme = self.env['secretary.publicadores'].search([('informe_id.fecha','=',self.mes_seleccionado)])
+        lista_total = self.env['secretary.publicadores'].search([])
+        print("Debug: lista_conInforme_____________",lista_conInforme, flush=True)
+        print("Debug: lista_total_____________",lista_total, flush=True)
+        lista_irregulares = lista_total - lista_conInforme
+        print("Debug: lista_irregulares_____________",lista_irregulares, flush=True)
+
+        for publicador in lista_irregulares:
+            print("Debug: nombre______", publicador.grupo[0]['name'], flush=True)
+        return lista_irregulares
+        
+
            
  
 # MODELO PARA REPORTE TARJETA DE PUBLICADORES       

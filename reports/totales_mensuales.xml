@@ -7,6 +7,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">secretary.report_totalesMensuales</field><!-- Identifica el template (external ID) usado para renderizar el reporte-->
             <field name="print_report_name">'Informe_mensual_%s' % (object.mes_seleccionado)</field>
+            <field name="paperformat_id" ref="secretary.format_total_mensual"/>
             <!--field name="binding_model_id" ref="model_secretary_informes"></field-->
         </record>
     </data>
