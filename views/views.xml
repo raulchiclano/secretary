@@ -18,14 +18,14 @@
                 <field name="name" />
                 <field name="fecha_nacimiento" />
                 <field name="fecha_bautismo" />
-                <field name="telefono" />
-                <field name="email" />
+                <field name="telefono" widget="phone" />
+                <field name="email" widget="email" />
                 <field name="activo" invisible="1"/>
               </group>
               <group name="group_right" string="">
-                <field name="genero" />
+                <field name="genero" widget="radio" />
                 <field name="direccion" />
-                <field name="tipo" />
+                <field name="tipo" widget="radio" />
                 <field name="grupo" />
               </group>
               
