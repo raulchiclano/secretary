@@ -26,7 +26,7 @@
                 <field name="genero" widget="radio" />
                 <field name="direccion" />
                 <field name="tipo" widget="radio" />
-                <field name="grupo" />
+                <field name="grupo"/>
               </group>
               
             </group>
@@ -71,17 +71,23 @@
           <field name="name"/>
           <field name="grupo"/>
           <field name="tipo"/>
-          <field name="email"/>
           <templates>
             <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_global_click">
-                <div class="card-body">
-                  <h3 class="alert publicadores-name text-center">
+              <div t-attf-class="oe_kanban_global_click rounded-lg kanban-publicadores">
+                
+                <div class="card-body text-cool" style="text-align:center">
+                  <h3 class="alert publicadores-name">
                     <field name="name" />
                   </h3>
-                  <h4 class="text-center">Grupo nº <field name="grupo" /></h4>
-                  <p><field name="tipo"/></p>
-                  <p><field name="email"/></p>
+                  <h4>Grupo nº <field name="grupo"/></h4>
+                  
+                  <button string="Ver" name="kanban-button-publicadores" type="button" class="sec-button btn btn-outline-info o-kanban-button-new o_center" >Ver más </button>
+                  
+                </div>
+                <div class="oe_kanban_top_right">
+                  <span class="float-right text-right">
+                     <field name="tipo" widget="label_selection" options="{'classes': {'P': 'primary', 'R': 'info', 'A':'warning',}}"/>
+                  </span>
                 </div>
                 
               </div>
@@ -112,7 +118,7 @@
       <field name="name">Publicadores</field>
       <field name="res_model">secretary.publicadores</field>
       <field name="view_mode">kanban,tree,form</field> 
-      <field name="context">{"search_default_groupby_grupo":1}</field>
+      <field name="context">{"group_by": "grupo"}</field>
       <field name="help" type="html">
         <p class="oe_view_nocontent_create">
           Publicadores        
@@ -136,14 +142,20 @@
         <kanban class="o_secretary_grupos_kanban">
           <field name="id"/>
           <field name="name"/>
+
           <templates>
             <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_global_click">
+              <div t-attf-class="oe_kanban_global_click kanban-grupos rounded-lg">
                 <div class="oe_kanban_details">
-                  <h3>
-                    Grupo de servicio: <field name="name" />
-                  </h3>                                
-
+                  <h3 class="text-center text-cool">
+                    Grupo de servicio: <field class="text-center text-cool" name="name" />
+                  </h3>    
+                  <h5 class="text-center">
+                    Superintendente de Grupo: 
+                  </h5>     
+                  <h6 class="text-cool text-center blockquote-footer">
+                    <field name="responsable"/>
+                  </h6>                       
                 </div>
                 
               </div>
@@ -183,8 +195,9 @@
               <button name="este_mes_aux_activo" type="object" class="oe_stat_button" string='Aux.30/50h' icon='fa-check-square-o'/>
             </div>
             <group name="group_top" string="NOMBRE DEL PUBLICADOR">
-              <field name="nombre" />
-              <group name="group_left" string=''>
+              <field name="nombre" widget="selection" class="form-row"/>
+              <separator string="DATOS DEL INFORME"/>
+              <group name="group_left" string=' '>
                 <field name="mes" />
                 <field name="horas" />
                 <field name="revisitas" />
@@ -195,12 +208,12 @@
                 <field name="videos" />
                 <field name="cursos" />
                 <field name="tipo_informe" />
-                <field name="este_mes_aux" />
+                <field name="este_mes_aux" class="custom-switch"/>
               </group>
             </group>
             <notebook>
-              <page string="Description">
-                  <field name="notas" class="form-control" />
+              <page string="Notas adicionales">
+                  <field name="notas" class="form-row"/>
               </page>
             </notebook>
           </sheet>
@@ -211,7 +224,7 @@
     <record id="secretary_informes_action" model="ir.actions.act_window">
       <field name="name">Informes de predicación</field>
       <field name="res_model">secretary.informes</field>
-      <field name="view_mode">kanban,tree,form,graph</field>      
+      <field name="view_mode">kanban,tree,form,graph,calendar</field>      
       <field name="context">{"search_default_groupby_mes":1, "search_default_filterby_año":1}</field>
       <field name="help" type="html">
         <h3 class="oe_view_nocontent_create">
@@ -246,24 +259,62 @@
           <field name="horas"/>
           <field name="publicaciones"/>
           <field name="revisitas"/>
+          <field name="videos"/>
+          <field name="cursos"/>
           <templates>
             <t t-name="kanban-box">
-              <div t-attf-class="oe_kanban_global_click">
+              <div t-attf-class="oe_kanban_global_click rounded-lg kanban-publicadores">
                 <div class="oe_kanban_details">
                   <h3 class="text-cool">
                     <field name="nombre" />
                   </h3>                                
-                  <div t-if="record.horas.value">
-                    <strong>Horas:
-                      <t t-esc="record.horas.value"/> 
+                  <div class="o_kanban_inline_block" t-if="record.horas.value">
+                    <i id='icon-horas' class="fa fa-tachometer" role="img" aria-label="Horas del informe" />
+                    <strong>
+                      <field name="horas" widget="statinfo"
+                      string="Horas"
+                      icon="fa-calendar"
+                      options="{'label_field': 'label_tasks'}" /> 
                     </strong>
                   </div>
-                  <div t-if="record.publicaciones.value">
-                    <strong>Publicaciones: 
-                      <t t-esc="record.publicaciones.value"/> 
+                  <div style="margin-left: 20px" class="o_kanban_inline_block" t-if="record.publicaciones.value">
+                    <i id='icon-publicaciones' class="fa fa-files-o" role="img" aria-label="Horas del informe" />
+                    <strong>
+                      <field name="publicaciones" widget="statinfo"
+                      string="Publicaciones"
+                      icon="fa-files-o"
+                      help="Publicaciones"
+                      options="{'label_field': 'label_tasks'}" /> 
                     </strong>
                   </div>
-
+                  <div class="o_kanban_inline_block" t-if="record.revisitas.value">
+                    <i id='icon-revisitas' class="fa fa-repeat" role="img" aria-label="Revisitas del informe" />
+                    <strong>
+                      <field name="revisitas" widget="statinfo"
+                      string="Revisitas"
+                      icon="fa-calendar"
+                      options="{'label_field': 'label_tasks'}" /> 
+                    </strong>
+                  </div>
+                  <div style="margin-left: 20px" class="o_kanban_inline_block" t-if="record.videos.value">
+                    <i id='icon-videos' class="fa fa-youtube-play" role="img" aria-label="Videos del informe" />
+                    <strong>
+                      <field name="videos" widget="statinfo"
+                      string="Videos"
+                      icon="fa-calendar"
+                      options="{'label_field': 'label_tasks'}" /> 
+                    </strong>
+                  </div>
+                  <div t-if="record.cursos.value">
+                    <i id='icon-cursos' class="fa fa-suitcase" role="img" aria-label="Cursos del informe" />
+                    <strong>
+                      <field name="cursos" widget="statinfo"
+                      string="Cursos"
+                      icon="fa-calendar"
+                      options="{'label_field': 'label_tasks'}" /> 
+                    </strong>
+                  </div>
+                  
                 </div>
                 
               </div>
@@ -292,11 +343,21 @@
       <field name="name">view.secretary.informes.graph</field>
       <field name="model">secretary.informes</field>
       <field name="arch" type="xml">
-        <graph string="Totales">
-          <field name="mes" />
-          <field name="horas" />
+        <graph type="pie" string="Totales">
+          <field name="mes" type="row"/>
+          <field name="horas" type="measure"/>
 
         </graph>
+      </field>
+    </record>
+
+    <record id="view_secretary_informes_calendar" model="ir.ui.view">
+      <field name="name">view.secretary.informes.calendar</field>
+      <field name="model">secretary.informes</field>
+      <field name="arch" type="xml">
+        <calendar string="Tareas" date_start="fecha" event_open_popup="true" mode="year" color="fecha">
+          <field name="fecha"></field>
+        </calendar>
       </field>
     </record>
 
@@ -327,6 +388,38 @@
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">secretary.totales_mensuales_report</field>
       <field name="view_id" ref="wizard_totales_mensuales_view"/>
+      <field name="view_mode">form</field>      
+      <field name="target">new</field>
+    </record>
+
+
+
+    <!--MODELO TOTALES POR GRUPOS -->
+
+    <!-- Vista Form-->
+    <record id="wizard_totales_porgrupo_view" model="ir.ui.view">
+      <field name="name">Generar informe por grupos de servicio</field>
+      <field name="model">secretary.totales_porgrupo_report</field>
+      <field name="arch" type="xml">
+        <form string="Generar resumen del grupo">
+          <group>
+            <field name="grupo_seleccionado" />
+          </group>
+          <footer>
+            <button name="print_report_totales_porgrupo" string="Imprimir" class="oe_right oe_highlight" type="object"/>
+            <button name="get_publicadores_porgrupo" string="Test" class="oe_right oe_highlight" type="object"/>
+            <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- Vista Actions-->
+    <record id="secretary_totales_porgrupo_wizard" model="ir.actions.act_window">
+      <field name="name">Totales por grupo</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">secretary.totales_porgrupo_report</field>
+      <field name="view_id" ref="wizard_totales_porgrupo_view"/>
       <field name="view_mode">form</field>      
       <field name="target">new</field>
     </record>
@@ -367,6 +460,12 @@
     id="menu_secretary_totales_mensuales"
     name="Totales mensuales"
     action="secretary_totales_mensuales_wizard"     
+    parent="menu_secretary_totales"
+    sequence="0"/>
+    <menuitem
+    id="menu_secretary_totales_porgrupo"
+    name="Totales por grupo"
+    action="secretary_totales_porgrupo_wizard"     
     parent="menu_secretary_totales"
     sequence="0"/>
 

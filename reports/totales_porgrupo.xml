@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_totalesporGrupo_report" model="ir.actions.report">
+            <field name="name">Totales por grupo</field>
+            <field name="model">secretary.totales_porgrupo_report</field><!-- Especifica el modelo de donde coge los datos-->
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">secretary.report_totalesPorgrupo</field><!-- Identifica el template (external ID) usado para renderizar el reporte-->
+            <field name="print_report_name">'Informe_mensual_%s' % (object.grupo_seleccionado)</field>
+            <field name="paperformat_id" ref="secretary.format_total_porgrupos"/>
+            <!--field name="binding_model_id" ref="model_secretary_informes"></field-->
+        </record>
+    </data>
+</odoo>

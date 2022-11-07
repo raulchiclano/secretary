@@ -11,6 +11,7 @@
 
 from email.policy import default
 import string
+from tokenize import group
 from odoo import models, fields, api
 from datetime import *
 
@@ -54,14 +55,9 @@ class grupos(models.Model):
 
     id = fields.Integer(string= 'Nombre', default=lambda self: self.env['ir.sequence'].next_by_code('increment_your_field'))
     name = fields.Integer(string='Nombre', related="id")
+    responsable = fields.Many2one('secretary.publicadores', string="Superintendente de Grupo ")
 
 
-    def g_create(self):
-       grupo = {
-           'name': 'Grupo'
-       }
-       print(grupo)
-       self.env['secretary.grupos'].create(grupo)
 
 
 class informes(models.Model):
@@ -112,7 +108,7 @@ class informes(models.Model):
 
 
 
-
+# MODELO PARA REPORTE TOTALES DEL MES       
 class TotalesMensuales(models.TransientModel):
     _name = 'secretary.totales_mensuales_report'
     _description = 'Totales mensuales de la predicación'
@@ -185,7 +181,37 @@ class TotalesMensuales(models.TransientModel):
         return lista_irregulares
         
 
-           
+# MODELO PARA REPORTE TOTALES POR GRUPOS DE SERVICIO       
+class TotalesMensuales(models.TransientModel):
+    _name = 'secretary.totales_porgrupo_report'
+    _description = 'Totales por grupo de servicio'
+   # _inherit = 'secretary.informes'
+   # _auto = False
+   # _rec_name = 'id'
+
+   
+    def _grupo_sort(self):
+        grupos = self.env['secretary.grupos'].search([])
+        menu_grupo = []
+        for grupo in grupos:
+            menu_grupo.append((grupo.id, 'Grupo_'+ str(grupo.name)))
+        return menu_grupo
+
+    grupo_seleccionado = fields.Selection(_grupo_sort, string = "Escoga grupo para generar informe", required = True)
+    
+    def print_report_totales_porgrupo(self):
+        return self.env.ref('secretary.action_totalesporGrupo_report').report_action(self)
+
+
+
+    def get_publicadores_porgrupo(self):
+        lista_porgrupos = self.env['secretary.publicadores'].search([('grupo','=',self.grupo_seleccionado),])
+        print("Debug: lista_porgrupos_____________",lista_porgrupos, flush=True)
+        #for publicador in lista_porgrupos:
+        #    print("Debug: nombre______", publicador.grupo[0]['name'], flush=True)
+        return lista_porgrupos
+        
+         
  
 # MODELO PARA REPORTE TARJETA DE PUBLICADORES       
 class InformesReport(models.AbstractModel):

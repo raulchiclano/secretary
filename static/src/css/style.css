@@ -1,7 +1,18 @@
+/* CSS global*/
 .text-cool{
     color: #1E2838 !important;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
+.form-row:hover{
+    background-color: #17929f35 !important;
+
+}
+
+.form-row:focus{
+    border-color: #17929f !important;
+
+}
 .o_main_navbar{
     background-color: #17929f !important;
     border-color: #17929f !important;
@@ -17,7 +28,42 @@
     border-color: #9E2667 !important;
 }
 
+/*CSS del modelo PUBLICADORES*/
 .publicadores-name{
-    background-color: #189cab56 !important;
+    background-color: #189cab30 !important;
+    border-color: #17929f35 !important;
 }
 
+.kanban-publicadores{
+    border-color: #1E283835 !important;
+    margin-bottom: 5px !important;
+}
+
+.o_input.o_required_modifier{
+    background-color: #17929f35 !important;
+    border-color: #17929f35 !important;
+}
+
+.badge-primary {
+    color: #ffffff;
+    background-color: #189CAB;
+  }
+
+.badge-warning {
+    color: #ffffff;
+    background-color: #9E2667;
+  }
+
+.badge-info {
+    color: #ffffff;
+    background-color: #1e2838db;
+  }
+
+.sec-button {
+    margin: 10px 0px 0px 0px;
+}
+/* CSS del modelo GRUPOS*/
+.kanban-grupos{
+    background-color: #9e266620 !important;
+    border-color: #9E2667 !important;
+}
