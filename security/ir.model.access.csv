@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_/mnt/extra-addons/secretary_/mnt/extra-addons/secretary,/mnt/extra-addons/secretary./mnt/extra-addons/secretary,model_/mnt/extra-addons/secretary_/mnt/extra-addons/secretary,base.group_user,1,1,1,1
+access_secretary,secretary,model_id:secretary,group_id:1,1,1,1,1

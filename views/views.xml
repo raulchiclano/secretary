@@ -208,7 +208,7 @@
                 <field name="videos" />
                 <field name="cursos" />
                 <field name="tipo_informe" />
-                <field name="este_mes_aux" class="custom-switch"/>
+                <field name="este_mes_aux" widget="boolean_toggle"/>
               </group>
             </group>
             <notebook>
