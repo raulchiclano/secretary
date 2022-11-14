@@ -25,6 +25,8 @@ def get_years():
 class publicadores(models.Model):
      _name = 'secretary.publicadores'
      _description = 'Publicadores'
+      
+
 
      name = fields.Char(string='Nombre completo', default="apellidos, nombre", required=True)
      fecha_nacimiento = fields.Date(string='Fecha de nacimiento')
@@ -67,8 +69,33 @@ class informes(models.Model):
 
      #current_year = fields.Integer(string="Año actual", default=datetime.now().year)
      #current_year = str(current_year)
+      
+     @api.onchange('mes')
+     def _get_publicadores_por_informar(self):
+        print("[*] Fecha-->", self.fecha, flush=True)
+        pub_ya_informado = []
+        if self.fecha != False:
+            pub_con_informe = self.env['secretary.publicadores'].search([('informe_id.fecha','=',self.fecha)])
+            for x in pub_con_informe:
+                pub_ya_informado.append(x.id)
+            print(pub_ya_informado, flush=True)
+            return {'domain':{'nombre':[('id','!=',pub_ya_informado)]}}
+        else:
+            pass
 
-
+     '''@api.onchange('mes')
+     def _get_publicadores_por_informar(self):
+        print("[*] Fecha-->", self.fecha, flush=True)
+        pub_disponibles = []
+        if self.fecha != False:
+            pub_con_informe = self.env['secretary.publicadores'].search([('informe_id.fecha','=',self.fecha)])
+            for x in pub_con_informe:
+                print(x.id, flush=True)
+                return {'domain':{'nombre':[('id','=',x.id)]}}
+        else:
+            pass'''
+     
+     
      nombre = fields.Many2one("secretary.publicadores", string='Publicador')
      tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo')
      mes = fields.Selection([('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), ('4', 'Abril'),('5', 'Mayo'), ('6', 'Junio'), ('7', 'Julio'), ('8', 'Agosto'),('9', 'Septiembre'), ('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'), ], string='Mes', default=lambda self: str((date.today().month)-1))
@@ -85,6 +112,7 @@ class informes(models.Model):
      este_mes_aux = fields.Boolean(string = "Aux. 30/50 horas", readonly=True) #TODO: Integrarlo cuadno se filtre campos para mayor comodida y estetica
      tipo_informe = fields.Selection([('P','Publicador'), ('A', 'Auxiliar'), ('R','Regular')], string= "Tipo de Informe", default='P')
 
+                 
      def este_mes_aux_activo(self):
         self.este_mes_aux = not self.este_mes_aux     
 
@@ -100,6 +128,8 @@ class informes(models.Model):
             self.tipo_informe = "%s" %(self.nombre.tipo)
         else:
             pass
+
+     
 
    
      _sql_constraints = [
