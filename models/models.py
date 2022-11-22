@@ -12,7 +12,7 @@
 from email.policy import default
 import string
 from tokenize import group
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import *
 
 
@@ -58,6 +58,14 @@ class grupos(models.Model):
     id = fields.Integer(string= 'Nombre', default=lambda self: self.env['ir.sequence'].next_by_code('increment_your_field'))
     name = fields.Integer(string='Nombre', related="id")
     responsable = fields.Many2one('secretary.publicadores', string="Superintendente de Grupo ")
+    def name_get(self):
+        result = []
+        for g in self:
+            name = 'Grupo #%s' % (g.name)
+            result.append((g.id, name))
+        return result
+        
+
 
 
 
@@ -83,18 +91,6 @@ class informes(models.Model):
         else:
             pass
 
-     '''@api.onchange('mes')
-     def _get_publicadores_por_informar(self):
-        print("[*] Fecha-->", self.fecha, flush=True)
-        pub_disponibles = []
-        if self.fecha != False:
-            pub_con_informe = self.env['secretary.publicadores'].search([('informe_id.fecha','=',self.fecha)])
-            for x in pub_con_informe:
-                print(x.id, flush=True)
-                return {'domain':{'nombre':[('id','=',x.id)]}}
-        else:
-            pass'''
-     
      
      nombre = fields.Many2one("secretary.publicadores", string='Publicador')
      tipo_publicador = fields.Selection(string= "Tipo de publicador", related='nombre.tipo')
@@ -129,12 +125,22 @@ class informes(models.Model):
         else:
             pass
 
-     
+     @api.constrains('horas')
+     def _validate_horas(self):
+        if self.horas <= 0:
+            raise exceptions.ValidatioError('¡CUIDADO: EL valor de las HORAS no debe de ser menor a 0!')
 
    
      _sql_constraints = [
         ('nombre_unique', 'unique(nombre, mes, año)', '¡Solo puede introducir un informe por publicador!')
     ]
+
+class informes_dashboard(models.Model):
+    _name = 'secretary.informes_dashboard'
+    _inherits = {'secretary.informes': 'mes_id'}
+
+    mes_id = fields.Many2one('secretary.informes', ondelete='cascade', string= 'Mes')
+
 
 
 

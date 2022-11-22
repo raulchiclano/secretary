@@ -79,7 +79,7 @@
                   <h3 class="alert publicadores-name">
                     <field name="name" />
                   </h3>
-                  <h4>Grupo nº <field name="grupo"/></h4>
+                  <h4><field name="grupo"/></h4>
                   
                   <button string="Ver" name="kanban-button-publicadores" type="button" class="sec-button btn btn-outline-info o-kanban-button-new o_center" >Ver más </button>
                   
@@ -361,6 +361,8 @@
       </field>
     </record>
 
+   
+
 
     <!--MODELO TOTALES MENSUALES -->
 
@@ -446,10 +448,11 @@
     <menuitem id="menu_secretary_informes" name="Informes" parent="menu_secretary_root" sequence="0" />
     <menuitem
     id="menu_secretary_informe"
-    name="Informes"
+    name="Ver informes"
     action="secretary_informes_action"     
     parent="menu_secretary_informes"
     sequence="0"/>
+
 
     <menuitem
     id="menu_secretary_totales"
