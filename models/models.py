@@ -128,7 +128,7 @@ class informes(models.Model):
      @api.constrains('horas')
      def _validate_horas(self):
         if self.horas <= 0:
-            raise exceptions.ValidatioError('¡CUIDADO: EL valor de las HORAS no debe de ser menor a 0!')
+            raise exceptions.ValidationError('¡CUIDADO: EL valor de las HORAS no debe de ser menor a 0!')
 
    
      _sql_constraints = [
