@@ -7,7 +7,7 @@ LLeva la gestión de los informes de predicación de una manera facil y rápida.
     Navega dentro del directorio para addons personalizados y clona este repositorio.
 ```
 cd /odoo14/custom/addons
-git clone https://github.com/theodoostore/AppManager.git
+git clone https://github.com/raulchiclano/secretary.git
 ```
    
    Ve a Aplicaciones y haz click en "Actualizar lista de aplicaciones"
