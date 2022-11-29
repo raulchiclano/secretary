@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <report
-            string="Tarjeta publicador"
-            id="secretary_tarjeta_report"
-            model="secretary.publicadores"
-            report_type="qweb-pdf"
-            name="secretary.report_tarjeta_publicador"
-            file="Tarjeta_publicador"
-            attachment_use="True"
-        />
-
+        <record id="secretary_tarjeta_report" model="ir.actions.report">
+            <field name="name">Tarjeta publicador</field>
+            <field name="model">secretary.publicadores</field><!-- Especifica el modelo de donde coge los datos-->
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">secretary.report_tarjeta_publicador</field><!-- Identifica el template (external ID) usado para renderizar el reporte-->
+            <field name="print_report_name">'Tarjeta_publicador_%s' % (object.name)</field>
+            <field name="paperformat_id" ref="secretary.format_total_porgrupos"/>
+            <!--field name="binding_model_id" ref="model_secretary_informes"></field-->
+        </record>
     </data>
-    
-
 </odoo>

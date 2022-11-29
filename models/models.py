@@ -144,6 +144,31 @@ class informes_dashboard(models.Model):
 
 
 
+# MODELO PARA REPORTE REGISTRO DE PUBLICADOR (S-21).    
+class RegistroPublicador(models.TransientModel):
+    _name = 'secretary.registro_publicador_report'
+    _description = 'Formularios de Registro de publicador de la congregación (S-21)'
+   # _inherit = 'secretary.informes'
+   # _auto = False
+   # _rec_name = 'id'
+    def _año_servicio_sort(self):
+        informes = self.env['secretary.informes'].search([])
+        informes_sorted = informes.sorted(key= lambda i : i.año ,reverse=True)
+        menu_año = []
+        for informe in informes_sorted:
+            menu_año.append((informe.año, informe.año))
+        menu_año = list(dict.fromkeys(menu_año))
+        return menu_año
+
+    año_servicio = fields.Selection(_año_servicio_sort, string= "Seleccione año de servicio a generar reporte")
+   
+    def print_report_formularios_registro_publicador(self):
+        return self.env.ref('secretary.action_registroPublicador_report').report_action(self)
+
+
+
+
+
 # MODELO PARA REPORTE TOTALES DEL MES       
 class TotalesMensuales(models.TransientModel):
     _name = 'secretary.totales_mensuales_report'

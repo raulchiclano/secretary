@@ -363,6 +363,34 @@
 
    
 
+    <!--MODELO REGISTROS PUBLICADOR S-21 -->
+
+    <!-- Vista Form-->
+    <record id="wizard_registro_publicadores_view" model="ir.ui.view">
+      <field name="name">Formularios de Registro de publicador de la congregación (S-21)</field>
+      <field name="model">secretary.registro_publicador_report</field>
+      <field name="arch" type="xml">
+        <form string="Seleciones año a generar">
+          <group>
+            <field name="año_servicio" />
+          </group>
+          <footer>
+            <button name="print_report_formularios_registro_publicador" string="Generar S-21" class="oe_right oe_highlight" type="object"/>
+            <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <!-- Vista Actions-->
+    <record id="secretary_registro_publicadores_wizard" model="ir.actions.act_window">
+      <field name="name">Formularios de Registro de publicador de la congregación</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">secretary.totales_mensuales_report</field>
+      <field name="view_id" ref="wizard_registro_publicadores_view"/>
+      <field name="view_mode">form</field>      
+      <field name="target">new</field>
+    </record>
 
     <!--MODELO TOTALES MENSUALES -->
 
@@ -454,10 +482,18 @@
     sequence="0"/>
 
 
+
     <menuitem
     id="menu_secretary_totales"
     name="Totales"
     parent="menu_secretary_root"
+    sequence="0"/>
+
+    <menuitem
+    id="menu_secretary_registro_publicador"
+    name="Generar Formularios S-21"
+    parent="menu_secretary_totales"
+    action="secretary_registro_publicadores_wizard"
     sequence="0"/>
     <menuitem
     id="menu_secretary_totales_mensuales"
