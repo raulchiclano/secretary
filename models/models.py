@@ -158,6 +158,7 @@ class RegistroPublicador(models.TransientModel):
         for informe in informes_sorted:
             menu_año.append((informe.año, informe.año))
         menu_año = list(dict.fromkeys(menu_año))
+        print(menu_año, flush=True)
         return menu_año
 
     año_servicio = fields.Selection(_año_servicio_sort, string= "Seleccione año de servicio a generar reporte")
@@ -165,6 +166,20 @@ class RegistroPublicador(models.TransientModel):
     def print_report_formularios_registro_publicador(self):
         return self.env.ref('secretary.action_registroPublicador_report').report_action(self)
 
+    def get_publicadores_por_año(self):
+        lista_por_año = self.env['secretary.publicadores'].search([('informe_id.año','=',self.año_servicio),])
+        print("Debug: lista_por_año_____________",lista_por_año, flush=True)
+        #for publicador in lista_por_año:
+        #    print("Debug: nombre______", publicador.grupo[0]['name'], flush=True)
+        return lista_por_año
+
+    def get_informes_por_tipo(self):
+        grouped = self.env['secretary.informes'].read_group(
+            [('año', '=', self.año_servicio)],
+            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')],
+            ['tipo_informe']
+        )
+        return grouped
 
 
 

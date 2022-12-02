@@ -367,16 +367,18 @@
 
     <!-- Vista Form-->
     <record id="wizard_registro_publicadores_view" model="ir.ui.view">
-      <field name="name">Formularios de Registro de publicador de la congregación (S-21)</field>
+      <field name="name">Formularios de Registro de publicador de la congregación</field>
       <field name="model">secretary.registro_publicador_report</field>
       <field name="arch" type="xml">
-        <form string="Seleciones año a generar">
+        <form string="Selecione año a generar">
           <group>
             <field name="año_servicio" />
           </group>
           <footer>
             <button name="print_report_formularios_registro_publicador" string="Generar S-21" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
+            <button name="get_publicadores_por_año" string="Test" class="oe_right oe_highlight" type="object"/>
+
           </footer>
         </form>
       </field>
@@ -386,7 +388,7 @@
     <record id="secretary_registro_publicadores_wizard" model="ir.actions.act_window">
       <field name="name">Formularios de Registro de publicador de la congregación</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">secretary.totales_mensuales_report</field>
+      <field name="res_model">secretary.registro_publicador_report</field>
       <field name="view_id" ref="wizard_registro_publicadores_view"/>
       <field name="view_mode">form</field>      
       <field name="target">new</field>
