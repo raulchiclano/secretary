@@ -37,7 +37,11 @@
 .kanban-publicadores{
     border-color: #1E283835 !important;
     margin-bottom: 5px !important;
+    width: 230px !important;
 }
+.o_kanban_group:not(.o_column_folded) {
+    width: 280px !important;
+  }
 
 .o_input.o_required_modifier{
     background-color: #17929f35 !important;
@@ -66,4 +70,6 @@
 .kanban-grupos{
     background-color: #9e266620 !important;
     border-color: #9E2667 !important;
+    width: 600px !important;
 }
+

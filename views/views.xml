@@ -377,7 +377,7 @@
           <footer>
             <button name="print_report_formularios_registro_publicador" string="Generar S-21" class="oe_right oe_highlight" type="object"/>
             <button special="cancel" string="Cancelar" class="oe_right oe_highlight"/>
-            <button name="get_publicadores_por_año" string="Test" class="oe_right oe_highlight" type="object"/>
+            <button name="test" string="Test" class="oe_right oe_highlight" type="object"/>
 
           </footer>
         </form>

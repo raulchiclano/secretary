@@ -173,13 +173,34 @@ class RegistroPublicador(models.TransientModel):
         #    print("Debug: nombre______", publicador.grupo[0]['name'], flush=True)
         return lista_por_año
 
-    def get_informes_por_tipo(self):
+    def lista_meses_con_informes(self):
+        meses = self.env['secretary.informes'].search([('año','=',self.año_servicio)])
+        print("meses---->",meses,flush=True)
+        meses_sorted = meses.sorted(key= lambda i : i.mes ,reverse=True)
+        lista_meses_con_informes = []
+        for mes in meses_sorted:
+            lista_meses_con_informes.append(int(mes.mes))
+        lista_meses_con_informes = list(dict.fromkeys(lista_meses_con_informes))
+        lista_meses_con_informes.sort()
+        print(lista_meses_con_informes, flush=True)
+        return lista_meses_con_informes
+
+    def test(self):
+        lista = [8,9,10,11]
+        for l in lista:
+            self.get_informes_por_tipo(l)
+            
+    def get_informes_por_tipo(self,x):
+        mes=x
         grouped = self.env['secretary.informes'].read_group(
-            [('año', '=', self.año_servicio)],
-            [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')],
-            ['tipo_informe']
-        )
-        return grouped
+                [('fecha', '=', '%s-%s' %(mes,self.año_servicio)),],# WHERE
+                [('horas:sum'),('publicaciones:sum'),('videos:sum'),('revisitas:sum'),('cursos:sum')], # FUNCTION IN SELECT; SELECT SUM (cv) AS total
+                ['tipo_informe'] # GROUPBY
+            )
+        print("mes es --->",mes, flush=True)
+        print("totales por mes--->",grouped, flush=True)
+            
+        return grouped # devuelve array de tuplas
 
 
 
