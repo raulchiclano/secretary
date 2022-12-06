@@ -15,3 +15,4 @@ git clone https://github.com/raulchiclano/secretary.git
     ¡Genial! Veras tu aplicacion **Secretary** en el menú principal de Odoo.
 
 ## Screenshots
+![Screenshot de la aplicación](https://github.com/raulchiclano/secretary/blob/main/screenshot.png)
